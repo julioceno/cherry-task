@@ -1,6 +1,7 @@
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import express from 'express';
+import cors from 'cors';
 
 import { appRouter } from './routes';
 
@@ -14,6 +15,7 @@ const t = initTRPC.context<Context>().create();
 
 const app = express();
 
+app.use(cors());
 app.use(
   '/cherry-tasks',
   trpcExpress.createExpressMiddleware({
