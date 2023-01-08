@@ -1,8 +1,21 @@
 import { useState } from 'react';
 import { trpc } from '../../utils/trpc';
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
-  const mutation = trpc.createUser.useMutation();
+  const [error, setError] = useState('');
+
+  const [email, setEmail] = useState('');
+  const [password, setPassoword] = useState('');
+
+  const navigate = useNavigate();
+
+  const authenticate = trpc.authenticate.useMutation();
+
+  function clearFields() {
+    setEmail('');
+    setPassoword('');
+  }
 
   return (
     <div
@@ -21,15 +34,25 @@ function SignIn() {
           onSubmit={async (e) => {
             e.preventDefault();
 
-            mutation.mutate({
-              name: ' Júlio',
-              email: 'julio@gmail.com',
-              password: 'password',
-              passwordConfirm: 'password',
-            });
+            authenticate.mutate(
+              {
+                email,
+                password,
+              },
+              {
+                onSuccess(value) {
+                  console.log(value);
+                  localStorage.setItem('token', value.data.token);
 
-            console.log(mutation);
-          }}
+                  navigate('/Dashboard');
+                  clearFields();
+                },
+                onError(value) {
+                  setError(value.message);
+                },
+              }
+            );
+          }} //julio@gmail.com
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -38,14 +61,27 @@ function SignIn() {
           }}
         >
           <div>
-            <input type='email' placeholder='Email' />
+            <input
+              type='email'
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div>
-            <input type='password' placeholder='Senha' />
+            <input
+              type='password'
+              placeholder='Senha'
+              value={password}
+              onChange={(e) => setPassoword(e.target.value)}
+            />
           </div>
           <div style={{ textAlign: 'center', marginTop: '1rem' }}>
             <button>Entrar</button>
           </div>
+          {authenticate.isLoading && <p>Carregando...</p>}
+          {error && <p>{error}</p>}
+
           <a href='/sign-up'>Registrar-se</a>
         </form>
       </div>

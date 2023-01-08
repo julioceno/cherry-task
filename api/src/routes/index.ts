@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
-import { TRPC_ERROR_CODES_BY_KEY } from '@trpc/server/dist/rpc';
-import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
 import bcrypt from 'bcrypt';
+import { z } from 'zod';
+import { tokenGenerate } from '../app/functions';
+import { publicProcedure, router } from '../trpc';
 
 const prisma = new PrismaClient();
 
@@ -41,7 +41,7 @@ const appRouter = router({
 
       const passwordEncrypted = bcrypt.hashSync(password, 8);
 
-      const createUser = await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: {
           name,
           email,
@@ -49,11 +49,12 @@ const appRouter = router({
         },
       });
 
+      const token = tokenGenerate(createdUser);
+
       return {
-        data: createUser,
+        data: { createdUser, token },
       };
     }),
-
   authenticate: publicProcedure
     .input(
       z.object({
@@ -84,10 +85,15 @@ const appRouter = router({
         });
       }
 
+      const token = tokenGenerate(user);
+
       return {
-        data: req.input,
+        data: { user, token },
       };
     }),
+  isAuthenticate: publicProcedure.query(() => {
+    return true;
+  }),
 });
 
 export type AppRouter = typeof appRouter;

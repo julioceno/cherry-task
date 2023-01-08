@@ -1,5 +1,5 @@
 function Home() {
-  return <a href='/sign-up'>Registrar-se</a>;
+  return <a href='/sign-in'>Entrar</a>;
 }
 
 export { Home };

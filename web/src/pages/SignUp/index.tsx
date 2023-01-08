@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { trpc } from '../../utils/trpc';
 
 function SignUp() {
-  const mutation = trpc.createUser.useMutation();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassoword] = useState('');
-  const [passwordConfirm, setpasswordConfirm] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const createUser = trpc.createUser.useMutation();
+
+  function clearFields() {
+    setName('');
+    setEmail('');
+    setPassoword('');
+    setPasswordConfirm('');
+  }
 
   return (
     <div
@@ -25,15 +33,16 @@ function SignUp() {
           onSubmit={async (e) => {
             e.preventDefault();
 
-            mutation.mutate({
+            createUser.mutate({
               name,
               email,
               password,
               passwordConfirm,
             });
 
-            console.log(mutation.isSuccess);
-            console.log(mutation.error);
+            console.log(createUser.isSuccess);
+            console.log(createUser.error);
+            clearFields();
           }}
           style={{
             display: 'flex',
@@ -47,6 +56,7 @@ function SignUp() {
               type='text'
               placeholder='Nome'
               onChange={(e) => setName(e.target.value)}
+              value={name}
             />
           </div>
           <div>
@@ -54,6 +64,7 @@ function SignUp() {
               type='email'
               placeholder='Email'
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
           </div>
           <div>
@@ -61,13 +72,15 @@ function SignUp() {
               type='password'
               placeholder='Senha'
               onChange={(e) => setPassoword(e.target.value)}
+              value={password}
             />
           </div>
           <div>
             <input
               type='password'
               placeholder='Confirme sua senha'
-              onChange={(e) => setpasswordConfirm(e.target.value)}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              value={passwordConfirm}
             />
           </div>
           <div style={{ textAlign: 'center', marginTop: '1rem' }}>
