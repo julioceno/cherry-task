@@ -11,7 +11,14 @@ function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3333/cherry-tasks',
+          url: 'http://localhost:3333/cherry-tasks', // TODO: colocar isso num .env
+          headers() {
+            return {
+              authorization: localStorage.getItem('token')
+                ? `Bearer ${localStorage.getItem('token')}`
+                : undefined,
+            };
+          },
         }),
       ],
     })

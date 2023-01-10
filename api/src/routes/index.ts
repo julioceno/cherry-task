@@ -4,11 +4,12 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { tokenGenerate } from '../app/functions';
 import { publicProcedure, router } from '../trpc';
+import { authenticateRouter } from './authenticate.router';
 
 const prisma = new PrismaClient();
 
 const appRouter = router({
-  greeting: publicProcedure.query(() => 'hello tRPC v10!'),
+  ping: publicProcedure.query(() => 'pong!'),
   createUser: publicProcedure
     .input(
       z.object({
@@ -91,9 +92,7 @@ const appRouter = router({
         data: { user, token },
       };
     }),
-  isAuthenticate: publicProcedure.query(() => {
-    return true;
-  }),
+  authenticateRouter,
 });
 
 export type AppRouter = typeof appRouter;

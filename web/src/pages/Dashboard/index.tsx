@@ -1,12 +1,12 @@
 import { trpc } from '../../utils/trpc';
 
 function Dashboard() {
-  const value = trpc.isAuthenticate.useQuery();
+  const value = trpc.authenticateRouter.secretPlace.useQuery();
 
   const client = trpc.useContext();
 
   function testAccess() {
-    client.isAuthenticate.refetch();
+    client.authenticateRouter.secretPlace.refetch();
     console.log(value);
   }
 
@@ -22,7 +22,7 @@ function Dashboard() {
       }}
     >
       <div style={{ textAlign: 'center' }}>
-        {value.data ? <p>Autenticado</p> : <p>Sem autenticação</p>}
+        {value.isSuccess ? <p>Autenticado</p> : <p>Sem autenticação</p>}
         <button onClick={() => testAccess()}>Testar acesso</button>
       </div>
     </div>

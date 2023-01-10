@@ -11,7 +11,7 @@ function tokenGenerate(params: TokenGenerateProps) {
   const secret = '62178bf11c643983d8ff35113dab7bd8';
 
   const token = jwt.sign({ id: params.id }, secret, {
-    expiresIn: '1d',
+    expiresIn: '10s',
   });
 
   return token;
