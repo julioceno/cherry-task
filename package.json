@@ -1,0 +1,17 @@
+{
+  "name": "turborepo-basic-shared",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel"
+  },
+  "repository": "git@github.com:julioceno/cherry-task.git",
+  "author": "julioceno <julioreplay@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "turbo": "^1.7.0"
+  }
+}
