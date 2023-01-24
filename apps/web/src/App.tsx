@@ -1,9 +1,12 @@
+import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { useState } from 'react';
 import { trpc } from './utils/trpc';
 
 import { RoutesComponent } from './Routes';
+import { theme } from './theme';
+import CssBaseline from '@mui/material/CssBaseline';
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -27,7 +30,10 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <RoutesComponent />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <RoutesComponent />
+        </ThemeProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
