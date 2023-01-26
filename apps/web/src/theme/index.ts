@@ -10,7 +10,10 @@ const theme = createTheme({
       main: '#F4F4F2',
       dark: '#484848',
     },
-
+    blackButton: {
+      main: '#484848',
+      contrastText: '#F4F4F2',
+    },
     background: {
       default: '#F4F4F2',
     },
@@ -25,5 +28,21 @@ const theme = createTheme({
   components: {},
   spacing: (factor: number) => `${0.25 * factor}rem`, // (Bootstrap strategy)
 });
+
+declare module '@mui/material/styles' {
+  interface Palette {
+    blackButton: Palette['primary'];
+  }
+
+  interface PaletteOptions {
+    blackButton: PaletteOptions['primary'];
+  }
+}
+
+declare module '@mui/material/Button' {
+  interface ButtonPropsColorOverrides {
+    blackButton: true;
+  }
+}
 
 export { theme };

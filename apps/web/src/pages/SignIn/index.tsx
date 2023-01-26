@@ -81,6 +81,7 @@ function SignIn() {
                   fullWidth
                 />
               </Grid>
+
               <Spacer y={3} />
               <Grid item xs={12} textAlign='end'>
                 <Typography
@@ -103,7 +104,7 @@ function SignIn() {
               <PrimaryButton
                 title='Entrar'
                 variant='contained'
-                color='primary'
+                color='blackButton'
                 fullWidth
               />
             </Grid>

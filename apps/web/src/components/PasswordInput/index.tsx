@@ -26,19 +26,16 @@ function PasswordInput({
     <TextInput
       label={label}
       name={name}
-      inputProps={{
+      InputProps={{
         type: showPassword ? 'text' : 'password',
         endAdornment: (
-          <InputAdornment position='start'>
+          <InputAdornment position='end'>
             <IconButton
               aria-label='toggle password visibility'
               onClick={toggle}
+              edge='end'
             >
-              {showPassword ? (
-                <Visibility color='primary' />
-              ) : (
-                <VisibilityOff color='primary' />
-              )}
+              {showPassword ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         ),
@@ -47,5 +44,4 @@ function PasswordInput({
     />
   );
 }
-
 export { PasswordInput };
