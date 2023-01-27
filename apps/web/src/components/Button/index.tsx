@@ -3,11 +3,10 @@ import { ReactNode } from 'react';
 import { useStyles } from './styles';
 
 interface IPrimaryButtonProps extends ButtonProps {
-  title: string;
-  icon?: ReactNode;
+  children: ReactNode;
 }
 
-function PrimaryButton({ title, icon, ...rest }: IPrimaryButtonProps) {
+function PrimaryButton({ children, ...rest }: IPrimaryButtonProps) {
   const classes = useStyles();
 
   return (
@@ -18,7 +17,7 @@ function PrimaryButton({ title, icon, ...rest }: IPrimaryButtonProps) {
       style={{ borderRadius: 30 }}
       {...rest}
     >
-      {icon || title}
+      {children}
     </Button>
   );
 }

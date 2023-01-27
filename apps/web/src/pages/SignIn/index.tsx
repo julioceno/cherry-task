@@ -1,5 +1,7 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
+import { Form, Formik } from 'formik';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
   PasswordInput,
   PrimaryButton,
@@ -7,11 +9,16 @@ import {
   TextInput,
 } from '../../components';
 import { useStyles } from './styles';
+import { ILoginForm } from './types';
+import { LoginSchema } from './validation';
 
 function SignIn() {
   const classes = useStyles();
-
   const theme = useTheme();
+
+  function handleSubmit(values: ILoginForm) {
+    console.log('foi');
+  }
 
   return (
     <Grid container flexDirection='row' className={classes.container}>
@@ -47,70 +54,85 @@ function SignIn() {
         </Grid>
         <Grid container item justifyContent='center'>
           <Grid item xs={5} md={3}>
-            <PrimaryButton title='Inscreva-se' href='/sign-up' fullWidth />
+            <PrimaryButton href='/sign-up' fullWidth>
+              Inscreva-se
+            </PrimaryButton>
           </Grid>
         </Grid>
       </Grid>
-      <Grid
-        container
-        item
-        flexDirection='column'
-        justifyContent='center'
-        lg={7}
-        xs={12}
+      <Formik
+        initialValues={{ user: '', password: '' }}
+        onSubmit={handleSubmit}
+        validationSchema={toFormikValidationSchema(LoginSchema)}
       >
-        <Box padding={theme.spacing(0, 10)}>
-          <Grid item>
-            <Typography variant='h4' textAlign='center' fontWeight={600}>
-              Entrar
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Spacer y={10} />
-          </Grid>
-          <Grid container item justifyContent='center' spacing={4}>
-            <Grid item md={8} xs={12}>
-              <TextInput label='Usuário' name='usuario' fullWidth />
-            </Grid>
-            <Grid item md={8} xs={12}>
-              <Grid item xs={12}>
-                <PasswordInput
-                  label='Senha'
-                  name='senha'
-                  type='password'
-                  fullWidth
-                />
-              </Grid>
+        {({ values, handleSubmit }) => (
+          <Grid
+            container
+            item
+            flexDirection='column'
+            justifyContent='center'
+            lg={7}
+            xs={12}
+          >
+            <Form onSubmit={handleSubmit}>
+              <Box padding={theme.spacing(0, 10)}>
+                <Grid item>
+                  <Typography variant='h4' textAlign='center' fontWeight={600}>
+                    Entrar
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Spacer y={10} />
+                </Grid>
+                <Grid container item justifyContent='center' spacing={4}>
+                  <Grid item md={8} xs={12}>
+                    <TextInput label='Usuário' name='user' fullWidth />
+                  </Grid>
+                  <Grid item md={8} xs={12}>
+                    <Grid item xs={12}>
+                      <PasswordInput
+                        label='Senha'
+                        name='password'
+                        type='password'
+                        fullWidth
+                      />
+                    </Grid>
 
-              <Spacer y={3} />
-              <Grid item xs={12} textAlign='end'>
-                <Typography
-                  component='a'
-                  fontSize={15}
-                  fontWeight={100}
-                  style={{ opacity: 0.9, cursor: 'pointer' }}
-                  onClick={() => alert('Ainda nao implementado')}
-                >
-                  Esqueceu a senha?
-                </Typography>
-              </Grid>
-            </Grid>
+                    <Spacer y={3} />
+                    <Grid item xs={12} textAlign='end'>
+                      <Typography
+                        component='a'
+                        fontSize={15}
+                        fontWeight={100}
+                        style={{ opacity: 0.9, cursor: 'pointer' }}
+                        onClick={() => alert('Ainda nao implementado')}
+                      >
+                        Esqueceu a senha?
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item>
+                  <Spacer y={10} />
+                </Grid>
+                <Grid container item justifyContent='center'>
+                  <Grid item xs={12} md={3}>
+                    <PrimaryButton
+                      title=''
+                      variant='contained'
+                      color='blackButton'
+                      type='submit'
+                      fullWidth
+                    >
+                      Entrar
+                    </PrimaryButton>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Form>
           </Grid>
-          <Grid item>
-            <Spacer y={10} />
-          </Grid>
-          <Grid container item justifyContent='center'>
-            <Grid item xs={12} md={3}>
-              <PrimaryButton
-                title='Entrar'
-                variant='contained'
-                color='blackButton'
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      </Grid>
+        )}
+      </Formik>
     </Grid>
   );
 }

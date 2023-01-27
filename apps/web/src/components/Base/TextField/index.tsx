@@ -6,7 +6,7 @@ interface ITextFieldProps extends Omit<TextFieldProps, 'label' | 'name'> {
   name: string;
 }
 
-function TextInput({
+function CustomTextField({
   variant = 'standard',
   type = 'text',
   label,
@@ -33,4 +33,4 @@ function TextInput({
   );
 }
 
-export { TextInput };
+export { CustomTextField };

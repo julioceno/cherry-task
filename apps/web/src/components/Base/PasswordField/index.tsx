@@ -1,16 +1,14 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { BaseTextFieldProps, IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, TextFieldProps } from '@mui/material';
 import { useState } from 'react';
-import { TextInput } from '../TextInput';
+import { CustomTextField } from '../TextField';
 
-type TextFieldProps = Omit<BaseTextFieldProps, 'label' | 'name'>;
-
-interface ITextFieldProps extends TextFieldProps {
+interface ITextFieldProps extends Omit<TextFieldProps, 'label' | 'name'> {
   label: string;
   name: string;
 }
 
-function PasswordInput({
+function PasswordField({
   label,
   name,
   type = 'password',
@@ -23,7 +21,7 @@ function PasswordInput({
   };
 
   return (
-    <TextInput
+    <CustomTextField
       label={label}
       name={name}
       InputProps={{
@@ -44,4 +42,4 @@ function PasswordInput({
     />
   );
 }
-export { PasswordInput };
+export { PasswordField };
