@@ -15,6 +15,11 @@ import { useStyles } from './styles';
 import { ILoginForm } from './types';
 import { LoginSchema } from './validation';
 
+const initialValues: ILoginForm = {
+  username: '',
+  password: '',
+};
+
 function SignIn() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -25,9 +30,11 @@ function SignIn() {
   function handleSubmit(values: ILoginForm) {
     setLoading(true);
 
+    const { username, password } = values;
+
     const formattedData = {
-      email: values.user,
-      password: values.password,
+      username,
+      password,
     };
 
     authenticate.mutate(formattedData, {
@@ -36,8 +43,10 @@ function SignIn() {
       },
       onError(value) {
         setLoading(false);
+        value.message;
         snackbarStore.setMessage(
-          'Não foi possível autenticar, verifique se suas credenciais estão corretas'
+          value.message ??
+            'Não foi possível autenticar, verifique se suas credenciais estão corretas'
         );
       },
     });
@@ -84,7 +93,7 @@ function SignIn() {
         </Grid>
       </Grid>
       <Formik
-        initialValues={{ user: '', password: '' }}
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={toFormikValidationSchema(LoginSchema)}
       >
@@ -109,7 +118,7 @@ function SignIn() {
                 </Grid>
                 <Grid container item justifyContent='center' spacing={4}>
                   <Grid item md={8} xs={12}>
-                    <TextInput label='Usuário' name='user' fullWidth />
+                    <TextInput label='Usuário' name='username' fullWidth />
                   </Grid>
                   <Grid item md={8} xs={12}>
                     <Grid item xs={12}>

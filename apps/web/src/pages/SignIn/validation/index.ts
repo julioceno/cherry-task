@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { MessagesZod } from '../../../utils/messages';
 
 const LoginSchema = z.object({
-  user: z.string({
+  username: z.string({
     required_error: MessagesZod.MESSAGE_REQUIRED,
   }),
   password: z.string({
