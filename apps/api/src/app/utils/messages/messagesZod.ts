@@ -5,7 +5,7 @@ const MessagesZod = {
     `O campo '${field} é obrigatório.'`,
 
   MESSAGE_FIELD_EMAIL: (field: string) =>
-    `O campo '${field} deve ser umemail.'`,
+    `O campo '${field} deve ser um email.'`,
 };
 
 export { MessagesZod };

@@ -12,10 +12,10 @@ import {
 import { snackbarStore } from '../../utils';
 import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
-import { ILoginForm } from './types';
+import { LoginInput } from './types';
 import { LoginSchema } from './validation';
 
-const initialValues: ILoginForm = {
+const initialValues: LoginInput = {
   username: '',
   password: '',
 };
@@ -27,7 +27,7 @@ function SignIn() {
 
   const authenticate = trpc.authenticate.useMutation();
 
-  function handleSubmit(values: ILoginForm) {
+  function handleSubmit(values: LoginInput) {
     setLoading(true);
 
     const { username, password } = values;
@@ -43,7 +43,6 @@ function SignIn() {
       },
       onError(value) {
         setLoading(false);
-        value.message;
         snackbarStore.setMessage(
           value.message ??
             'Não foi possível autenticar, verifique se suas credenciais estão corretas'
@@ -60,8 +59,8 @@ function SignIn() {
         flexDirection='column'
         justifyContent='center'
         className={classes.sideBar}
-        spacing={20}
-        lg={5}
+        spacing={10}
+        lg={7}
         xs={12}
       >
         <Grid
@@ -103,7 +102,7 @@ function SignIn() {
             item
             flexDirection='column'
             justifyContent='center'
-            lg={7}
+            lg={5}
             xs={12}
           >
             <Form onSubmit={handleSubmit}>
