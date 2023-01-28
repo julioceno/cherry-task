@@ -7,6 +7,7 @@ import { trpc } from './utils/trpc';
 import { RoutesComponent } from './Routes';
 import { theme } from './theme';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Snackbar } from './components/Snackbar';
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -33,6 +34,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <RoutesComponent />
+          <Snackbar />
         </ThemeProvider>
       </QueryClientProvider>
     </trpc.Provider>

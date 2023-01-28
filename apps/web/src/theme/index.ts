@@ -45,4 +45,10 @@ declare module '@mui/material/Button' {
   }
 }
 
+declare module '@mui/material/CircularProgress' {
+  interface CircularProgressPropsColorOverrides {
+    blackButton: true;
+  }
+}
+
 export { theme };

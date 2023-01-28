@@ -1,6 +1,7 @@
-import { Grid, Typography, useTheme } from '@mui/material';
+import { CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Form, Formik } from 'formik';
+import { useState } from 'react';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
   PasswordInput,
@@ -8,16 +9,38 @@ import {
   Spacer,
   TextInput,
 } from '../../components';
+import { snackbarStore } from '../../utils';
+import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { ILoginForm } from './types';
 import { LoginSchema } from './validation';
 
 function SignIn() {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
 
+  const authenticate = trpc.authenticate.useMutation();
+
   function handleSubmit(values: ILoginForm) {
-    console.log('foi');
+    setLoading(true);
+
+    const formattedData = {
+      email: values.user,
+      password: values.password,
+    };
+
+    authenticate.mutate(formattedData, {
+      onSuccess(value) {
+        setLoading(false);
+      },
+      onError(value) {
+        setLoading(false);
+        snackbarStore.setMessage(
+          'Não foi possível autenticar, verifique se suas credenciais estão corretas'
+        );
+      },
+    });
   }
 
   return (
@@ -122,9 +145,14 @@ function SignIn() {
                       variant='contained'
                       color='blackButton'
                       type='submit'
+                      disabled={loading}
                       fullWidth
                     >
-                      Entrar
+                      {loading ? (
+                        <CircularProgress size={25} color='blackButton' />
+                      ) : (
+                        'Entrar'
+                      )}
                     </PrimaryButton>
                   </Grid>
                 </Grid>
@@ -138,101 +166,3 @@ function SignIn() {
 }
 
 export { SignIn };
-
-/**
- * import { useState } from 'react';
-import { trpc } from '../../utils/trpc';
-import { useNavigate } from 'react-router-dom';
-import Button from '@mui/material/Button';
-
-function SignIn() {
-  const [error, setError] = useState('');
-
-  const [email, setEmail] = useState('');
-  const [password, setPassoword] = useState('');
-
-  const navigate = useNavigate();
-
-  const authenticate = trpc.authenticate.useMutation();
-
-  function clearFields() {
-    setEmail('');
-    setPassoword('');
-  }
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100vw',
-        height: '100vh',
-        flexDirection: 'column',
-      }}
-    >
-      <div>
-        <Button variant='contained'>Hello World</Button>
-        <h1 style={{ textAlign: 'center' }}>Entrar</h1>
-        <form
-          onSubmit={async (e) => {
-            e.preventDefault();
-
-            authenticate.mutate(
-              {
-                email,
-                password,
-              },
-              {
-                onSuccess(value) {
-                  console.log(value);
-                  localStorage.setItem('token', value.data.token);
-
-                  navigate('/Dashboard');
-                  clearFields();
-                },
-                onError(value) {
-                  setError(value.message);
-                },
-              }
-            );
-          }} //julio@gmail.com
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          <div>
-            <input
-              type='email'
-              placeholder='Email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div>
-            <input
-              type='password'
-              placeholder='Senha'
-              value={password}
-              onChange={(e) => setPassoword(e.target.value)}
-            />
-          </div>
-          <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-            <button>Entrar</button>
-          </div>
-          {authenticate.isLoading && <p>Carregando...</p>}
-          {error && <p>{error}</p>}
-
-          <a href='/sign-up'>Registrar-se</a>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-export { SignIn };
-
- */
