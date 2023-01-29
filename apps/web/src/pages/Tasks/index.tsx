@@ -1,14 +1,16 @@
 import { Grid } from '@mui/material';
-import { DrawerCustomer } from '../../components';
+import { AppWrap } from '../../components';
 import { useStyles } from './styles';
 
 function Tasks() {
   const classes = useStyles();
 
   return (
-    <Grid container className={classes.container}>
-      <DrawerCustomer />
-    </Grid>
+    <AppWrap>
+      <Grid container className={classes.container}>
+        bla bla
+      </Grid>
+    </AppWrap>
   );
 }
 

@@ -2,7 +2,8 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: any) => ({
   container: {
-    height: '100vh',
+    flexGrow: 1,
+    p: 3,
   },
 }));
 
