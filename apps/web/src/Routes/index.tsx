@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { SignIn, SignUp, Dashboard } from '../pages';
+import { SignIn, SignUp, Tasks } from '../pages';
 
 function RoutesComponent() {
   return (
@@ -8,7 +8,7 @@ function RoutesComponent() {
       <Routes>
         <Route path='/' element={<SignIn />} />
         <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/tasks' element={<Tasks />} />
       </Routes>
     </Router>
   );

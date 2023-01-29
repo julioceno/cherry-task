@@ -14,6 +14,7 @@ import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { LoginInput } from './types';
 import { LoginSchema } from './validation';
+import { useNavigate } from 'react-router-dom';
 
 const initialValues: LoginInput = {
   username: '',
@@ -24,6 +25,7 @@ function SignIn() {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const authenticate = trpc.authenticate.useMutation();
 
@@ -38,8 +40,9 @@ function SignIn() {
     };
 
     authenticate.mutate(formattedData, {
-      onSuccess(value) {
+      onSuccess() {
         setLoading(false);
+        navigate('/tasks');
       },
       onError(value) {
         setLoading(false);
