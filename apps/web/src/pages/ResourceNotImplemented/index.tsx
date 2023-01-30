@@ -2,7 +2,7 @@ import { Divider, Grid, Typography } from '@mui/material';
 import { useStyles } from './styles';
 import { Spacer } from '../../components';
 
-function Tasks() {
+function ResourceNotImplemented() {
   const classes = useStyles();
 
   return (
@@ -10,7 +10,7 @@ function Tasks() {
       <Spacer y={3} />
       <Grid item xs={12}>
         <Typography variant='h4' fontWeight='500'>
-          Organize suas tarefas
+          sadsdas
         </Typography>
         <Divider />
       </Grid>
@@ -18,4 +18,4 @@ function Tasks() {
   );
 }
 
-export { Tasks };
+export { ResourceNotImplemented };

@@ -1,6 +1,5 @@
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import React from 'react';
-import { TasksComponent, SignIn, SignUp } from '../pages';
+import { Tasks, SignIn, SignUp, ResourceNotImplemented } from '../pages';
 import { Resources } from './resources';
 import TaskIcon from '@mui/icons-material/Task';
 
@@ -29,7 +28,14 @@ const menuItemsPrivate: PrivateItem[] = [
     label: 'Tarefas',
     pathname: '/tasks',
     icon: TaskIcon,
-    component: TasksComponent,
+    component: Tasks,
+  },
+  {
+    name: Resources.TASKS,
+    label: 'Recurso não implementado',
+    pathname: '/resource-not-implemented',
+    icon: TaskIcon,
+    component: ResourceNotImplemented,
   },
 ];
 

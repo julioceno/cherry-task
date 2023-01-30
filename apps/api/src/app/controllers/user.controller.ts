@@ -30,6 +30,17 @@ class UserController {
       });
     }
 
+    const emailAlreadyUsed = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (emailAlreadyUsed) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Email já está sendo utilizado',
+      });
+    }
+
     const passwordEncrypted = bcrypt.hashSync(password, 8);
 
     const createdUser = await prisma.user.create({
