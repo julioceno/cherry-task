@@ -40,9 +40,10 @@ function SignIn() {
     };
 
     authenticate.mutate(formattedData, {
-      onSuccess() {
-        setLoading(false);
+      onSuccess(value) {
+        localStorage.setItem('token', value.token);
         navigate('/tasks');
+        setLoading(false);
       },
       onError(value) {
         setLoading(false);
