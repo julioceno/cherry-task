@@ -11,6 +11,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
+import { menuItemsPrivate } from '../../Routes/menuItems';
+import { ConditionalTooltip } from '../ConditionalTooltip';
 
 import { Drawer, DrawerHeader } from './styles';
 
@@ -36,7 +38,10 @@ function DrawerCustomer() {
         >
           Cherry Task
         </Typography>
-        <Tooltip title='Expandir Menu' placement='right'>
+        <Tooltip
+          title={open ? 'Retrair Menu' : 'Expandir Menu'}
+          placement='right'
+        >
           <IconButton onClick={toggle}>
             <Menu style={{ color: theme.palette.secondary.main }} />
           </IconButton>
@@ -44,27 +49,36 @@ function DrawerCustomer() {
       </DrawerHeader>
       <Divider />
       <List style={{ flexGrow: 1 }}>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
-              }}
+        {menuItemsPrivate.map((item) => (
+          <ListItem key={item.name} disablePadding sx={{ display: 'block' }}>
+            <ConditionalTooltip
+              title={item.label}
+              placement='right'
+              enabled={!open}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
-                  color: theme.palette.secondary.main,
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
                 }}
               >
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color: theme.palette.secondary.main,
+                  }}
+                >
+                  <item.icon />
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.label}
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ConditionalTooltip>
           </ListItem>
         ))}
       </List>

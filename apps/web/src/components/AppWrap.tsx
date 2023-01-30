@@ -1,13 +1,19 @@
 import { Box } from '@mui/system';
-import { ReactNode } from 'react';
+import { Fragment, ReactNode } from 'react';
 import { DrawerCustomer } from './Drawer';
 
 interface AppWrapProps {
   children: ReactNode;
+  label: string;
+  publicRouter?: boolean;
 }
 
-function AppWrap({ children }: AppWrapProps) {
-  return (
+function AppWrap({ children, label, publicRouter }: AppWrapProps) {
+  document.title = `Cherry Task - ${label}`;
+
+  return publicRouter ? (
+    <Fragment>{children}</Fragment>
+  ) : (
     <Box sx={{ display: 'flex' }}>
       <DrawerCustomer />
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>

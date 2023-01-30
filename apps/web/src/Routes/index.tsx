@@ -1,14 +1,23 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AppWrap } from '../components';
 
-import { SignIn, SignUp, Tasks } from '../pages';
+import { SignIn, SignUp } from '../pages';
+import { Item, menuItems } from './menuItems';
 
 function RoutesComponent() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<SignIn />} />
-        <Route path='/sign-up' element={<SignUp />} />
-        <Route path='/tasks' element={<Tasks />} />
+        {menuItems.map((item) => (
+          <Route
+            path={item.pathname}
+            element={
+              <AppWrap label={item.label} publicRouter={item.publicRouter}>
+                <item.component />
+              </AppWrap>
+            }
+          />
+        ))}
       </Routes>
     </Router>
   );
