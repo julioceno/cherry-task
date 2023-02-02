@@ -153,7 +153,6 @@ function SignUp() {
                 <Grid container item justifyContent='center'>
                   <Grid item xs={12} md={3}>
                     <PrimaryButton
-                      title=''
                       variant='contained'
                       color='blackButton'
                       type='submit'

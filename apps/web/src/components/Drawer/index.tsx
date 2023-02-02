@@ -11,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { menuItemsPrivate } from '../../Routes/menuItems';
 import { ConditionalTooltip } from '../ConditionalTooltip';
 
@@ -20,8 +21,12 @@ function DrawerCustomer() {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
-  function toggle() {
-    setOpen(!open);
+  const navigate = useNavigate();
+
+  const toggle = () => setOpen(!open);
+
+  function handleClick(pathname: string) {
+    navigate(pathname);
   }
 
   return (
@@ -57,6 +62,7 @@ function DrawerCustomer() {
               enabled={!open}
             >
               <ListItemButton
+                onClick={() => handleClick(item.pathname)}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',

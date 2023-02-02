@@ -2,6 +2,7 @@ import React from 'react';
 import { Tasks, SignIn, SignUp, ResourceNotImplemented } from '../pages';
 import { Resources } from './resources';
 import TaskIcon from '@mui/icons-material/Task';
+import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 
 export interface PrivateItem {
   name: string;
@@ -32,9 +33,9 @@ const menuItemsPrivate: PrivateItem[] = [
   },
   {
     name: Resources.TASKS,
-    label: 'Recurso não implementado',
+    label: 'Não implementado',
     pathname: '/resource-not-implemented',
-    icon: TaskIcon,
+    icon: DoNotDisturbAltIcon,
     component: ResourceNotImplemented,
   },
 ];

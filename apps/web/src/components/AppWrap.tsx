@@ -14,9 +14,15 @@ function AppWrap({ children, label, publicRouter }: AppWrapProps) {
   return publicRouter ? (
     <Fragment>{children}</Fragment>
   ) : (
-    <Box sx={{ display: 'flex', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        height: '100%',
+        alignItems: 'start',
+      }}
+    >
       <DrawerCustomer />
-      <Box component='main' sx={{ flexGrow: 1 }}>
+      <Box component='main' sx={{ flexGrow: 1, paddingLeft: 3 }}>
         {children}
       </Box>
     </Box>
