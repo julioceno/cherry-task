@@ -2,10 +2,15 @@ import { Grid } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
-import { PrimaryButton, Spacer, TextInput } from '../../../../components';
-import { useStyles } from './styles';
+import {
+  PrimaryButton,
+  SelectInput,
+  SelectOption,
+  Spacer,
+  TextInput,
+} from '../../../../components';
 import { CreateTaskSchema } from './validation';
 
 interface Props {
@@ -23,6 +28,21 @@ function ModalCreateTask({ open, handleClose }: Props) {
   const handleSubmit = () => {
     alert('aa');
   };
+
+  const options: SelectOption[] = [
+    {
+      label: 'Trabalho',
+      value: 'tabalho',
+    },
+    {
+      label: 'Estudo',
+      value: 'estudo',
+    },
+    {
+      label: 'Passatempos',
+      value: 'Passatempos',
+    },
+  ];
 
   return (
     <Dialog fullWidth maxWidth='md' open={open} onClose={handleClose}>
@@ -45,7 +65,12 @@ function ModalCreateTask({ open, handleClose }: Props) {
                 </Grid>
                 <Grid container item spacing={2}>
                   <Grid item md={6} xs={12}>
-                    <TextInput label='Tipo' name='type' fullWidth />
+                    <SelectInput
+                      label='Tipo'
+                      name='type'
+                      color='primary'
+                      options={options}
+                    />
                   </Grid>
                   <Grid item md={6} xs={12}>
                     <TextInput

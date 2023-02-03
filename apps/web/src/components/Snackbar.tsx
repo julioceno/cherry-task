@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { snackbarStore } from '../utils';
-import { SnackbarCustomer } from './Base/Snackbar';
+import { SnackbarCustomer } from './Base';
 
 const Snackbar = observer(() => {
   return (
