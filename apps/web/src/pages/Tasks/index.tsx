@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Spacer } from '../../components';
-import { ModalCreateTask } from './components';
+import { ListCards, ModalCreateTask } from './components';
 import { useStyles } from './styles';
 
 function Tasks() {
@@ -33,6 +33,9 @@ function Tasks() {
       </Grid>
       <Grid item xs={10}>
         <Divider variant='fullWidth' />
+      </Grid>
+      <Grid container item xs={12}>
+        <ListCards />
       </Grid>
       <Tooltip title='Criar nova tarefa' placement='top'>
         <Fab

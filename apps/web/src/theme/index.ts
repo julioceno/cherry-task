@@ -27,15 +27,7 @@ const theme = createTheme({
   typography: {
     fontFamily: ['"Montserrat"', 'Open Sans'].join(','),
   },
-  components: {
-    MuiDatePicker: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'red',
-        },
-      },
-    },
-  },
+  components: {},
   spacing: (factor: number) => `${0.25 * factor}rem`, // (Bootstrap strategy)
 });
 
