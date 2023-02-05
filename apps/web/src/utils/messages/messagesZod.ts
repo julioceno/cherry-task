@@ -1,6 +1,9 @@
 const MessagesZod = {
-  MESSAGE_REQUIRED: 'O campo em específico é obrigatório.',
-  MESSAGE_EMAIL: 'O campo deve ser um e-mail.',
+  MESSAGE_REQUIRED: 'Obrigatório.',
+  MESSAGE_EMAIL: 'Deve ser um e-mail.',
+
+  // DATES
+  MESSAGE_INVALID_DATE: 'Deve ser uma data válida.',
 };
 
 export { MessagesZod };

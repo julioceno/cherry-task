@@ -5,23 +5,24 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
+  DateInput,
   PrimaryButton,
   SelectInput,
   SelectOption,
   Spacer,
   TextInput,
 } from '../../../../components';
-import { CreateTaskSchema } from './validation';
+import { CreateTaskInput, CreateTaskSchema } from './validation';
 
 interface Props {
   open: boolean;
   handleClose: () => void;
 }
 
-const initialValues = {
+const initialValues: CreateTaskInput = {
   name: '',
   type: '',
-  dataFinalizar: '',
+  dateFinalize: null,
 };
 
 function ModalCreateTask({ open, handleClose }: Props) {
@@ -55,7 +56,7 @@ function ModalCreateTask({ open, handleClose }: Props) {
           onSubmit={handleSubmit}
           validationSchema={toFormikValidationSchema(CreateTaskSchema)}
         >
-          {({ handleSubmit }) => (
+          {({ handleSubmit, values }) => (
             <Form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 <Grid container item spacing={2}>
@@ -73,15 +74,14 @@ function ModalCreateTask({ open, handleClose }: Props) {
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
-                    <TextInput
+                    <DateInput
                       label='Data de finalização (Opcional)'
-                      name='dataFinalizar'
-                      fullWidth
+                      name='dateFinalize'
                     />
                   </Grid>
                 </Grid>
                 <Grid container item justifyContent='center' xs={12}>
-                  <Grid item xs={2.5}>
+                  <Grid item md={2.5} sm={4} xs={12}>
                     <Spacer y={5} />
                     <PrimaryButton
                       fullWidth

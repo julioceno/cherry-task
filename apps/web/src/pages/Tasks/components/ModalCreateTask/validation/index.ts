@@ -8,9 +8,9 @@ const CreateTaskSchema = z.object({
   type: z.string({
     required_error: MessagesZod.MESSAGE_REQUIRED,
   }),
-  dataFinalizar: z.string({
-    required_error: MessagesZod.MESSAGE_REQUIRED,
-  }),
+  dateFinalize: z.date().nullable().optional(),
 });
+
+export type CreateTaskInput = z.infer<typeof CreateTaskSchema>;
 
 export { CreateTaskSchema };

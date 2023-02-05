@@ -1,12 +1,12 @@
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextFieldProps } from '@mui/material';
 import { useState } from 'react';
+import { FormikInputProps } from '../../formik';
 import { CustomTextField } from '../TextField';
 
-interface ITextFieldProps extends Omit<TextFieldProps, 'label' | 'name'> {
-  label: string;
-  name: string;
-}
+interface ITextFieldProps
+  extends Omit<TextFieldProps, 'label' | 'name'>,
+    FormikInputProps {}
 
 function PasswordField({
   label,

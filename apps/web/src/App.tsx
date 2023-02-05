@@ -3,11 +3,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { useState } from 'react';
 import { trpc } from './utils/trpc';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { RoutesComponent } from './Routes';
 import { theme } from './theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Snackbar } from './components/Snackbar';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -31,11 +33,13 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <RoutesComponent />
-          <Snackbar />
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <RoutesComponent />
+            <Snackbar />
+          </ThemeProvider>
+        </LocalizationProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

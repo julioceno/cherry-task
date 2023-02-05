@@ -1,4 +1,6 @@
 import { createTheme } from '@mui/material/styles';
+import type {} from '@mui/x-date-pickers/themeAugmentation';
+import type {} from '@mui/x-date-pickers-pro/themeAugmentation';
 
 const theme = createTheme({
   palette: {
@@ -25,7 +27,15 @@ const theme = createTheme({
   typography: {
     fontFamily: ['"Montserrat"', 'Open Sans'].join(','),
   },
-  components: {},
+  components: {
+    MuiDatePicker: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'red',
+        },
+      },
+    },
+  },
   spacing: (factor: number) => `${0.25 * factor}rem`, // (Bootstrap strategy)
 });
 
