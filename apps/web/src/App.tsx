@@ -4,6 +4,8 @@ import { httpBatchLink } from '@trpc/client';
 import { useState } from 'react';
 import { trpc } from './utils/trpc';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 import { RoutesComponent } from './Routes';
 import { theme } from './theme';
@@ -33,13 +35,15 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <RoutesComponent />
-            <Snackbar />
-          </ThemeProvider>
-        </LocalizationProvider>
+        <DndProvider backend={HTML5Backend}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <RoutesComponent />
+              <Snackbar />
+            </ThemeProvider>
+          </LocalizationProvider>
+        </DndProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

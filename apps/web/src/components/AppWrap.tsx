@@ -1,14 +1,16 @@
 import { Box } from '@mui/system';
 import { Fragment, ReactNode } from 'react';
+import { Item } from '../Routes/menuItems';
 import { DrawerCustomer } from './Drawer';
 
 interface AppWrapProps {
   children: ReactNode;
   label: string;
   publicRouter?: boolean;
+  unlisted?: boolean;
 }
 
-function AppWrap({ children, label, publicRouter }: AppWrapProps) {
+function AppWrap({ children, label, publicRouter, unlisted }: AppWrapProps) {
   document.title = `Cherry Task - ${label}`;
 
   return publicRouter ? (

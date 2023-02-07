@@ -1,4 +1,5 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../../../components';
 
 export interface CardProps {
@@ -9,9 +10,14 @@ export interface CardProps {
 
 function Card({ title, type, description }: CardProps) {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const height = 60;
   const width = 80;
+
+  function handleNavigation(pathname: string) {
+    navigate(pathname);
+  }
 
   return (
     <Box
@@ -22,6 +28,7 @@ function Card({ title, type, description }: CardProps) {
         flexDirection: 'column',
         '&:hover': {
           background: theme.palette.primary.main,
+          cursor: 'pointer',
         },
       }}
       margin={2}
@@ -29,6 +36,10 @@ function Card({ title, type, description }: CardProps) {
       height={theme.spacing(height)}
       width={theme.spacing(width)}
       borderRadius={theme.spacing(width / width)}
+      component='span'
+      onClick={() =>
+        handleNavigation('/task/5130ab09-f763-4c95-8065-fcc20581adae')
+      }
     >
       <Box>
         <Typography variant='h5' fontWeight='600'>

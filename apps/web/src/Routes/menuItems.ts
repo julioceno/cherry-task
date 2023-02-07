@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tasks, SignIn, SignUp, ResourceNotImplemented } from '../pages';
+import { Tasks, SignIn, SignUp, ResourceNotImplemented, Task } from '../pages';
 import { Resources } from './resources';
 import TaskIcon from '@mui/icons-material/Task';
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
@@ -13,6 +13,15 @@ export interface PrivateItem {
   component: () => JSX.Element;
 }
 
+export interface UnlistedItems {
+  name: string;
+  label: string;
+  pathname: string;
+  publicRouter?: false;
+  unlisted?: true;
+  component: () => JSX.Element;
+}
+
 export interface PublicItem {
   name: string;
   label: string;
@@ -21,7 +30,7 @@ export interface PublicItem {
   component: () => JSX.Element;
 }
 
-export type Item = PrivateItem | PublicItem;
+export type Item = PrivateItem | PublicItem | UnlistedItems;
 
 const menuItemsPrivate: PrivateItem[] = [
   {
@@ -37,6 +46,16 @@ const menuItemsPrivate: PrivateItem[] = [
     pathname: '/resource-not-implemented',
     icon: DoNotDisturbAltIcon,
     component: ResourceNotImplemented,
+  },
+];
+
+const menuUnlistedItems: UnlistedItems[] = [
+  {
+    name: Resources.TASK,
+    label: 'Tarefa',
+    pathname: '/task/:id',
+    component: Task,
+    unlisted: true,
   },
 ];
 
@@ -57,6 +76,10 @@ const menuItemsPublic: PublicItem[] = [
   },
 ];
 
-const menuItems: Item[] = [...menuItemsPublic, ...menuItemsPrivate];
+const menuItems: Item[] = [
+  ...menuItemsPublic,
+  ...menuItemsPrivate,
+  ...menuUnlistedItems,
+];
 
 export { menuItems, menuItemsPrivate, menuItemsPublic };
