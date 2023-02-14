@@ -28,10 +28,15 @@ const theme = createTheme({
     fontFamily: ['"Montserrat"', 'Open Sans'].join(','),
   },
   components: {},
+
   spacing: (factor: number) => `${0.25 * factor}rem`, // (Bootstrap strategy)
 });
 
 declare module '@mui/material/styles' {
+  interface Theme {
+    fontSize: (factor: number) => string;
+  }
+
   interface Palette {
     blackButton: Palette['primary'];
   }
