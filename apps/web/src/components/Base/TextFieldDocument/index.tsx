@@ -1,42 +1,37 @@
 import { useTheme } from '@mui/material';
+import { CSSProperties } from 'react';
 
-interface Styles {
-  fontSize: string;
-  bold?: boolean;
-}
-
-interface TextFieldDocumentProps {
+interface TextFieldDocumentProps
+  extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   name: string;
-  label: string;
-  styles: Styles;
+  label?: string;
+  styles?: CSSProperties;
 }
 
-function TextFieldDocument({ name, label, styles }: TextFieldDocumentProps) {
+function TextFieldDocument({
+  name,
+  styles: receveidStyles,
+  ...rest
+}: TextFieldDocumentProps) {
   const theme = useTheme();
 
-  const defaultStyles = {
+  const defaultStyles: CSSProperties = {
     border: '0 none',
     background: 'none',
     boxShadow: 'none',
     outline: 'none',
-    color: theme.palette.secondary.dark,
     width: '100%',
     padding: 0,
     margin: 0,
-
-    fontSize: styles.fontSize,
-    fontWeight: styles.bold ? 'bold' : 'none',
+    color: theme.palette.secondary.dark,
   };
 
-  return (
-    <input
-      id={name}
-      type='text'
-      name={name}
-      placeholder={label}
-      style={defaultStyles}
-    />
-  );
+  const styles: CSSProperties = Object.assign(defaultStyles, receveidStyles);
+
+  return <input id={name} type='text' name={name} style={styles} {...rest} />;
 }
 
 export { TextFieldDocument };
