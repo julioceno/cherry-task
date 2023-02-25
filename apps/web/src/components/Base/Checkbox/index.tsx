@@ -51,7 +51,13 @@ function CheckboxDocument({
   };
 
   return (
-    <Box display='flex' justifyContent='center' alignItems='center'>
+    <Box
+      display='flex'
+      justifyContent='center'
+      alignItems='center'
+      key={task.id}
+      component='div'
+    >
       <div
         onMouseEnter={toggleHover}
         onMouseLeave={toggleHover}
@@ -80,6 +86,7 @@ function CheckboxDocument({
         />
       </div>
       <TextFieldDocument
+        id={task.id}
         name={'aaaa'}
         value={task.label}
         styles={{

@@ -1,16 +1,14 @@
-import {
-  useTheme,
-  Divider,
-  Grid,
-  Box,
-  Typography,
-  Checkbox,
-} from '@mui/material';
-import { useState } from 'react';
+import { Box, Divider, Grid, useTheme } from '@mui/material';
+import { useFormik } from 'formik';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
+import { SnackbarSaveDocument } from './components';
 import { useStyles } from './styles';
-import { v4 as uuidv4 } from 'uuid';
+import { Timer } from './timer';
+
+const timer = new Timer(() => console.log('maoe'), 2000);
 
 const createTask = () => ({
   id: uuidv4(),
@@ -23,6 +21,24 @@ export function Task() {
   const theme = useTheme();
   const classes = useStyles();
   const [tasks, setTasks] = useState([createTask()]);
+  const [lastCreated, setLastCreated] = useState<Nullable<string>>(null);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      name: 'Título',
+      description: '',
+      steps: [],
+    },
+
+    onSubmit: (values) => {
+      setOpenSnackbar(true);
+
+      setTimeout(() => {
+        setOpenSnackbar(false);
+      }, 2000);
+    },
+  });
 
   const createStep = (id: string) => {
     const index = tasks.findIndex((task) => task.id == id);
@@ -31,14 +47,14 @@ export function Task() {
       focus: false,
     }));
 
-    tempTasks.splice(index + 1, 0, createTask());
-
+    const newElement = createTask();
+    tempTasks.splice(index + 1, 0, newElement);
+    setLastCreated(newElement.id);
     setTasks(tempTasks);
   };
 
   const toggleCheckbox = (id: string) => {
     const index = tasks.findIndex((task) => task.id == id);
-
     const tempTasks = Array.from(tasks);
     tempTasks[index].checked = !tempTasks[index].checked;
     setTasks(tempTasks);
@@ -57,7 +73,28 @@ export function Task() {
     const tempTasks = Array.from(tasks);
     tempTasks[index].label = value;
     setTasks(tempTasks);
+    handleOnFocus(id);
   };
+
+  const handleOnFocus = (id: string) => {
+    document.getElementById(id)?.focus();
+  };
+
+  timer.setExecute(() => formik.handleSubmit());
+
+  useEffect(() => {
+    if (lastCreated) {
+      handleOnFocus(lastCreated);
+      setLastCreated(null);
+    }
+
+    formik.setFieldValue('steps', tasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    timer.setReset();
+    timer.setResume();
+  }, [formik.values]);
 
   return (
     <Grid container className={classes.container} spacing={2}>
@@ -67,7 +104,9 @@ export function Task() {
       <Grid item xs={12}>
         <TextFieldDocument
           placeholder='Insira o título da tarefa'
-          name='taskName'
+          name='name'
+          onChange={formik.handleChange}
+          value={formik.values.name}
           styles={{
             fontSize: theme.spacing(12),
             fontWeight: 'bold',
@@ -81,16 +120,18 @@ export function Task() {
         </Grid>
         <TextFieldDocument
           placeholder='Descrição...'
-          name='about'
+          name='description'
           styles={{ fontSize: theme.spacing(5) }}
+          value={formik.values.description}
+          onChange={formik.handleChange}
         />
       </Grid>
       <Grid item xs={12}>
         <Divider variant='fullWidth' />
       </Grid>
       <Grid item xs={12} spacing={2} component={Box}>
-        {tasks.map((item) => (
-          <Grid item xs={12}>
+        {tasks.map((item, index) => (
+          <Grid item xs={12} key={index}>
             <CheckboxDocument
               task={item}
               createStep={() => createStep(item.id)}
@@ -101,6 +142,7 @@ export function Task() {
           </Grid>
         ))}
       </Grid>
+      <SnackbarSaveDocument open={openSnackbar} />
     </Grid>
   );
 }

@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material';
 import { CSSProperties } from 'react';
 
-interface TextFieldDocumentProps
+export interface TextFieldDocumentProps
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -31,7 +31,7 @@ function TextFieldDocument({
 
   const styles: CSSProperties = Object.assign(defaultStyles, receveidStyles);
 
-  return <input id={name} type='text' name={name} style={styles} {...rest} />;
+  return <input id={name} name={name} type='text' style={styles} {...rest} />;
 }
 
 export { TextFieldDocument };
