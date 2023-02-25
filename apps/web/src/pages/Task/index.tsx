@@ -8,7 +8,7 @@ import { SnackbarSaveDocument } from './components';
 import { useStyles } from './styles';
 import { Timer } from './timer';
 
-const timer = new Timer(() => console.log('maoe'), 2000);
+const timer = new Timer();
 
 const createTask = () => ({
   id: uuidv4(),
@@ -23,6 +23,8 @@ export function Task() {
   const [tasks, setTasks] = useState([createTask()]);
   const [lastCreated, setLastCreated] = useState<Nullable<string>>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  timer.setProps(() => formik.handleSubmit(), 3000);
 
   const formik = useFormik({
     initialValues: {
@@ -80,8 +82,6 @@ export function Task() {
     document.getElementById(id)?.focus();
   };
 
-  timer.setExecute(() => formik.handleSubmit());
-
   useEffect(() => {
     if (lastCreated) {
       handleOnFocus(lastCreated);
@@ -95,6 +95,12 @@ export function Task() {
     timer.setReset();
     timer.setResume();
   }, [formik.values]);
+
+  useEffect(() => {
+    return () => {
+      formik.handleSubmit();
+    };
+  }, []);
 
   return (
     <Grid container className={classes.container} spacing={2}>
