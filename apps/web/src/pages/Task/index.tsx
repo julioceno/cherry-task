@@ -88,6 +88,8 @@ export function Task() {
 
     if (event.key === KeysEnum.BACKSPACE) {
       const index = tasks.findIndex((task) => task.id === id);
+      if (!index) return;
+
       const element = tasks[index] as ITask;
 
       if (!element.label?.length && element.label !== null)
@@ -95,8 +97,6 @@ export function Task() {
 
       if (element.label === null) {
         deleteStep(id);
-
-        if (!index) return;
 
         const getLastId = tasks[index - 1].id;
         handleOnFocus(getLastId);
