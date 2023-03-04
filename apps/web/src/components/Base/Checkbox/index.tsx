@@ -2,27 +2,24 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Checkbox, IconButton, useTheme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { Box } from '@mui/system';
-import {
-  KeyboardEvent,
-  useState,
-  ChangeEventHandler,
-  ChangeEvent,
-} from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { KeysEnum } from '../../../enums';
 import { TextFieldDocument } from '../TextFieldDocument';
 
-interface Task {
+export interface ITask {
   id: string;
-  label: string;
+  label: Nullable<string>;
   checked: boolean;
   focus: boolean;
 }
 
 interface Props {
-  task: Task;
+  task: ITask;
   createStep: () => void;
   deleteStep: () => void;
   toggleCheckbox: () => void;
   handleOnChange: (value: string) => void;
+  handleOnKeyUp: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function CheckboxDocument({
@@ -31,6 +28,7 @@ function CheckboxDocument({
   toggleCheckbox,
   task,
   handleOnChange: handleOnChangeCustomize,
+  handleOnKeyUp: handleOnKeyUpCustomize,
 }: Props) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
@@ -40,7 +38,7 @@ function CheckboxDocument({
   };
 
   const handleOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === KeysEnum.ENTER) {
       createStep();
     }
   };
@@ -87,16 +85,15 @@ function CheckboxDocument({
       </div>
       <TextFieldDocument
         id={task.id}
-        name={'aaaa'}
-        value={task.label}
+        name={`task-input-${task.id}`}
+        value={task.label || ''}
         styles={{
           fontSize: theme.spacing(4),
           ...(task.checked && { color: grey[400] }),
         }}
-        onKeyUp={handleOnKeyUp}
+        onKeyUp={handleOnKeyUpCustomize}
         onChange={handleOnChange}
         ref={(input) => {
-          console.log(input);
           input && input.focus();
         }}
       />

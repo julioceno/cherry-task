@@ -1,18 +1,19 @@
 import { Box, Divider, Grid, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { KeyboardEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Spacer, TextFieldDocument } from '../../components';
-import { CheckboxDocument } from '../../components/Base/Checkbox';
+import { CheckboxDocument, ITask } from '../../components/Base/Checkbox';
+import { KeysEnum } from '../../enums';
 import { SnackbarSaveDocument } from './components';
 import { useStyles } from './styles';
 import { Timer } from './timer';
 
 const timer = new Timer();
 
-const createTask = () => ({
+const createTask = (): ITask => ({
   id: uuidv4(),
-  label: '',
+  label: null,
   checked: false,
   focus: true,
 });
@@ -24,8 +25,6 @@ export function Task() {
   const [lastCreated, setLastCreated] = useState<Nullable<string>>(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  timer.setProps(() => formik.handleSubmit(), 3000);
-
   const formik = useFormik({
     initialValues: {
       name: 'Título',
@@ -34,11 +33,11 @@ export function Task() {
     },
 
     onSubmit: (values) => {
-      setOpenSnackbar(true);
+      /*     setOpenSnackbar(true);
 
       setTimeout(() => {
         setOpenSnackbar(false);
-      }, 2000);
+      }, 2000); */
     },
   });
 
@@ -69,13 +68,40 @@ export function Task() {
     setTasks(newTasks);
   };
 
-  const handleOnChange = (id: string, value: string) => {
-    const index = tasks.findIndex((task) => task.id == id);
+  const handleOnChange = (id: string, value: Nullable<string>) => {
+    const index = tasks.findIndex((task) => task.id === id);
 
     const tempTasks = Array.from(tasks);
     tempTasks[index].label = value;
     setTasks(tempTasks);
     handleOnFocus(id);
+  };
+
+  const handleOnKeyUp = (
+    id: string,
+    event: KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === KeysEnum.ENTER) {
+      createStep(id);
+      return;
+    }
+
+    if (event.key === KeysEnum.BACKSPACE) {
+      const index = tasks.findIndex((task) => task.id === id);
+      const element = tasks[index] as ITask;
+
+      if (!element.label?.length && element.label !== null)
+        return handleOnChange(id, null);
+
+      if (element.label === null) {
+        deleteStep(id);
+
+        if (!index) return;
+
+        const getLastId = tasks[index - 1].id;
+        handleOnFocus(getLastId);
+      }
+    }
   };
 
   const handleOnFocus = (id: string) => {
@@ -91,10 +117,11 @@ export function Task() {
     formik.setFieldValue('steps', tasks);
   }, [tasks]);
 
+  /*   timer.setProps(() => formik.handleSubmit(), 3000);
   useEffect(() => {
     timer.setReset();
     timer.setResume();
-  }, [formik.values]);
+  }, [formik.values]); */
 
   useEffect(() => {
     return () => {
@@ -144,6 +171,7 @@ export function Task() {
               deleteStep={() => deleteStep(item.id)}
               toggleCheckbox={() => toggleCheckbox(item.id)}
               handleOnChange={(value) => handleOnChange(item.id, value)}
+              handleOnKeyUp={(event) => handleOnKeyUp(item.id, event)}
             />
           </Grid>
         ))}

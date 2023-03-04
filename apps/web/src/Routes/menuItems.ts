@@ -41,7 +41,7 @@ const menuItemsPrivate: PrivateItem[] = [
     component: Tasks,
   },
   {
-    name: Resources.TASKS,
+    name: Resources.NOT_IMPLEMENT,
     label: 'Não implementado',
     pathname: '/resource-not-implemented',
     icon: DoNotDisturbAltIcon,

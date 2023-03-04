@@ -3,4 +3,5 @@ export enum Resources {
   SIGNUP = 'SIGNUP',
   TASKS = 'TASKS',
   TASK = 'TASK',
+  NOT_IMPLEMENT = 'NOT_IMPLEMENT',
 }
