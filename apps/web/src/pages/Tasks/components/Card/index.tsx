@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../../../components';
 
 export interface CardProps {
-  title: Nullable<string>;
-  description: Nullable<string>;
+  id: string;
+  title: string;
+  description: string;
 }
 
-function Card({ title, description }: CardProps) {
+function Card({ id, title, description }: CardProps) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -21,7 +22,7 @@ function Card({ title, description }: CardProps) {
   return (
     <Box
       sx={{
-        background: theme.palette.primary.dark,
+        background: theme.palette.primary.dark, // TODO: tirar isso do jsx
         color: theme.palette.secondary.main,
         display: 'flex',
         flexDirection: 'column',
@@ -36,21 +37,15 @@ function Card({ title, description }: CardProps) {
       width={theme.spacing(width)}
       borderRadius={theme.spacing(width / width)}
       component='span'
-      onClick={() =>
-        handleNavigation('/task/5130ab09-f763-4c95-8065-fcc20581adae')
-      }
+      onClick={() => handleNavigation(`/task/${id}`)}
     >
-      <Box>
-        <Typography variant='h5' fontWeight='600'>
-          {title}
-        </Typography>
-      </Box>
-      <Box>
-        <Spacer y={3} />
-      </Box>
+      <Typography variant='h5' fontWeight='600'>
+        {title}
+      </Typography>
+      <Spacer y={3} />
       <Typography
         style={{
-          display: '-webkit-box',
+          display: '-webkit-box', // TODO: tirar isso do jsx
           overflow: 'hidden',
           WebkitLineClamp: Math.round(width / (height - (width - 3) / 2)),
           WebkitBoxOrient: 'vertical',

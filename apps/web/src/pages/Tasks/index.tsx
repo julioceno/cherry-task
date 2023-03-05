@@ -7,102 +7,16 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../components';
 import { trpc } from '../../utils';
 import { Card } from './components';
 import { useStyles } from './styles';
 
-const cards = [
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry. Lorem Ipsum has been the industry's standard dummy text ever
-    since the 1500s, when an unknown printer took a galley of type and
-    scrambled it to make a type specimen book. It has survived not only five
-    centuries, but also the leap into electronic typesetting, remaining
-    essentially unchanged. It was popularised in the 1960s with the release
-    of Letraset sheets containing Lorem Ipsum passages, and more recently
-    with desktop publishing software like Aldus PageMaker including versions
-    of Lorem Ipsum`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-  {
-    title: 'Título',
-    type: 'Trabalho',
-    description: `Lorem Ipsum is simply dummy text of the printing and typesetting
-    industry.`,
-  },
-];
-
 function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const createTask = trpc.privateRouter.tasksRouter.create.useMutation();
   const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery();
@@ -111,8 +25,8 @@ function Tasks() {
     createTask.mutate(
       {},
       {
-        onSuccess: () => {
-          console.log('criou');
+        onSuccess: (value) => {
+          navigate(`/task/${value.id}`);
         },
         onError: () => {
           console.log('error');
@@ -137,6 +51,7 @@ function Tasks() {
       <Grid container item xs={12}>
         {tasks.data?.map((card) => (
           <Card
+            id={card.id}
             title={card.name ?? 'Sem título'}
             description={card.description ?? 'Sem descrição'}
           />

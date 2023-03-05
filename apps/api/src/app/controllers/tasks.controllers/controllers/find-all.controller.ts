@@ -13,5 +13,4 @@ class FindAllController {
 }
 
 const findAllController = new FindAllController();
-
 export { findAllController };
