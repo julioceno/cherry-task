@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { TaskEntity } from '../entities';
+import { TaskEntity } from '../../../entities';
 
 const prisma = new PrismaClient();
 
