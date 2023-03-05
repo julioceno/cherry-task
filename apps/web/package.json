@@ -24,6 +24,7 @@
     "@trpc/react-query": "^10.7.0",
     "@trpc/server": "^10.7.0",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "formik": "^2.2.9",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",

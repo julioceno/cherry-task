@@ -13,6 +13,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Snackbar } from './components/Snackbar';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { useCookies } from 'react-cookie';
+import { config } from './config';
 
 function App() {
   const [cookies] = useCookies(['token']);
@@ -22,7 +23,7 @@ function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3333/cherry-tasks', // TODO: colocar isso num .env
+          url: config.appUrl,
           headers() {
             return {
               authorization: `Bearer ${cookies.token}`,

@@ -8,12 +8,19 @@ import {
   useTheme,
 } from '@mui/material';
 import { Spacer } from '../../components';
+import { trpc } from '../../utils';
 import { ListCards } from './components';
 import { useStyles } from './styles';
 
 function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
+
+  const rotaPrivada = trpc.privateRouter.createTask.useQuery();
+
+  function createTask() {
+    rotaPrivada.refetch();
+  }
 
   return (
     <Grid container spacing={2} className={classes.container}>
@@ -40,7 +47,7 @@ function Tasks() {
             right: theme.spacing(10),
             bottom: theme.spacing(10),
           }}
-          onClick={() => null}
+          onClick={createTask}
         >
           <AddIcon color='secondary' />
         </Fab>

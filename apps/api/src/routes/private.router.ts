@@ -2,8 +2,9 @@ import { protectedProcedure } from '../app/middlewares';
 import { router } from '../trpc';
 
 const privateRouter = router({
-  secretPlace: protectedProcedure.query(({ ctx }) => {
-    return 'a key';
+  createTask: protectedProcedure.query(({ ctx }) => {
+    console.log('oi bateu', ctx);
+    return 'aaa';
   }),
 });
 

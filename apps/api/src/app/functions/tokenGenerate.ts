@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { config } from '../../config';
 
 interface TokenGenerateProps {
   id: string;
@@ -7,11 +8,10 @@ interface TokenGenerateProps {
 }
 
 function tokenGenerate(params: TokenGenerateProps) {
-  // TODO: fazer Pegar diretamente do env
-  const secret = '62178bf11c643983d8ff35113dab7bd8';
+  const secret = config.secret;
 
   const token = jwt.sign({ id: params.id }, secret, {
-    expiresIn: '10s',
+    expiresIn: '10d',
   });
 
   return token;

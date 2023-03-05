@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { middleware, publicProcedure } from '../../trpc';
 import jwt from 'jsonwebtoken';
+import { config } from '../../config';
 
 interface TokenPayload {
   id: string;
@@ -35,10 +36,7 @@ const isAuthed = middleware(({ next, ctx }) => {
   }
 
   try {
-    // TODO: Pegar diretamente do env
-    const secret = '62178bf11c643983d8ff35113dab7bd8';
-
-    const payload = jwt.verify(token, secret) as TokenPayload;
+    const payload = jwt.verify(token, config.secret) as TokenPayload;
 
     const userId = String(payload.id);
     return next({
