@@ -4,14 +4,8 @@ import { grey } from '@mui/material/colors';
 import { Box } from '@mui/system';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { KeysEnum } from '../../../enums';
+import { ITask } from '../../../pages/Task/types';
 import { TextFieldDocument } from '../TextFieldDocument';
-
-export interface ITask {
-  id: string;
-  label: Nullable<string>;
-  checked: boolean;
-  focus: boolean;
-}
 
 interface Props {
   task: ITask;
