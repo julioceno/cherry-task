@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { TaskEntity } from '../entities';
 
 const prisma = new PrismaClient();
 
@@ -10,7 +11,7 @@ class CreateTaskController {
       data: { userId },
     });
 
-    return createTask;
+    return new TaskEntity(createTask);
   }
 }
 
