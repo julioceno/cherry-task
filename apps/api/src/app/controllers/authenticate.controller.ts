@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcrypt';
+import { UserEntity } from '../entities';
 import { tokenGenerate } from '../functions';
 import { AuthenticateInput } from '../schemas';
 
@@ -9,7 +10,7 @@ const prisma = new PrismaClient();
 class AuthenticateController {
   constructor() {}
 
-  async authenticate({ username, password }: AuthenticateInput) {
+  async run({ username, password }: AuthenticateInput) {
     const user = await prisma.user.findUnique({
       where: { username },
     });
@@ -31,9 +32,10 @@ class AuthenticateController {
     }
 
     const token = tokenGenerate(user);
+    const userEntity = new UserEntity(user);
 
     return {
-      user,
+      user: userEntity,
       token,
     };
   }

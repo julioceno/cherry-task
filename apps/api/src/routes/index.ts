@@ -11,7 +11,7 @@ const appRouter = router({
     .mutation(({ input }) => userController.create(input)),
   authenticate: publicProcedure
     .input(authenticateSchema)
-    .mutation(async ({ input }) => authenticateController.authenticate(input)),
+    .mutation(async ({ input }) => authenticateController.run(input)),
   privateRouter,
 });
 
