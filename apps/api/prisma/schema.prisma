@@ -25,9 +25,9 @@ model User {
 }
 
 model Task {
-  id          String @id @default(uuid())
-  name        String
-  description String
+  id          String  @id @default(uuid())
+  name        String?
+  description String?
   userId      String
 
   createdAt DateTime  @default(now()) @map("created_at")

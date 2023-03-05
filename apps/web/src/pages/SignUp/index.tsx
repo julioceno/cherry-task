@@ -25,15 +25,12 @@ const initialValues: CreateUserInput = {
 
 function SignUp() {
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const theme = useTheme();
 
   const authenticate = trpc.createUser.useMutation();
 
   function handleSubmit(values: CreateUserInput) {
-    setLoading(true);
-
     const { username, email, password, passwordConfirm } = values;
 
     const formattedData = {
@@ -47,10 +44,8 @@ function SignUp() {
       onSuccess(value) {
         localStorage.setItem('token', value.token);
         navigate('/tasks');
-        setLoading(false);
       },
       onError(value) {
-        setLoading(false);
         snackbarStore.setMessage(value.message);
       },
     });
@@ -156,10 +151,10 @@ function SignUp() {
                       variant='contained'
                       color='blackButton'
                       type='submit'
-                      disabled={loading}
+                      disabled={authenticate.isLoading}
                       fullWidth
                     >
-                      {loading ? (
+                      {authenticate.isLoading ? (
                         <CircularProgress size={25} color='blackButton' />
                       ) : (
                         'Inscreva-se'

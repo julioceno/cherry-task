@@ -16,10 +16,20 @@ function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
 
-  const rotaPrivada = trpc.privateRouter.createTask.useQuery();
+  const rotaPrivada = trpc.privateRouter.createTask.useMutation();
 
   function createTask() {
-    rotaPrivada.refetch();
+    rotaPrivada.mutate(
+      {},
+      {
+        onSuccess: () => {
+          console.log('criou');
+        },
+        onError: () => {
+          console.log('error');
+        },
+      }
+    );
   }
 
   return (
