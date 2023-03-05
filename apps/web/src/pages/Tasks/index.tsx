@@ -104,10 +104,11 @@ function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
 
-  const createTaskMutation = trpc.privateRouter.createTask.useMutation();
+  const createTask = trpc.privateRouter.tasksRouter.create.useMutation();
+  const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery();
 
-  function createTask() {
-    createTaskMutation.mutate(
+  function handleCreateTask() {
+    createTask.mutate(
       {},
       {
         onSuccess: () => {
@@ -134,11 +135,10 @@ function Tasks() {
         <Divider variant='fullWidth' />
       </Grid>
       <Grid container item xs={12}>
-        {cards.map((card) => (
+        {tasks.data?.map((card) => (
           <Card
-            title={card.title}
-            type={card.type}
-            description={card.description}
+            title={card.name ?? 'Sem título'}
+            description={card.description ?? 'Sem descrição'}
           />
         ))}
       </Grid>
@@ -151,7 +151,7 @@ function Tasks() {
             right: theme.spacing(10),
             bottom: theme.spacing(10),
           }}
-          onClick={createTask}
+          onClick={handleCreateTask}
         >
           <AddIcon color='secondary' />
         </Fab>

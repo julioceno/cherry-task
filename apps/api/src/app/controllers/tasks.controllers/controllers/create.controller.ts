@@ -3,7 +3,7 @@ import { TaskEntity } from '../../../entities';
 
 const prisma = new PrismaClient();
 
-class CreateTaskController {
+class CreateController {
   constructor() {}
 
   async run(userId: string) {
@@ -15,6 +15,6 @@ class CreateTaskController {
   }
 }
 
-const createTaskController = new CreateTaskController();
+const createController = new CreateController();
 
-export { createTaskController };
+export { createController };

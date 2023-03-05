@@ -3,12 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../../../components';
 
 export interface CardProps {
-  title: string;
-  type: string;
-  description: string;
+  title: Nullable<string>;
+  description: Nullable<string>;
 }
 
-function Card({ title, type, description }: CardProps) {
+function Card({ title, description }: CardProps) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -45,7 +44,6 @@ function Card({ title, type, description }: CardProps) {
         <Typography variant='h5' fontWeight='600'>
           {title}
         </Typography>
-        <Typography fontWeight='500'>Tipo da tarefa: {type}</Typography>
       </Box>
       <Box>
         <Spacer y={3} />

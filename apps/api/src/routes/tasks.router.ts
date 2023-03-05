@@ -4,9 +4,10 @@ import { createTaskSchema } from '../app/schemas';
 import { tasksController } from '../app/controllers';
 
 const tasksRouter = router({
-  createTask: protectedProcedure
+  create: protectedProcedure
     .input(createTaskSchema)
     .mutation(async ({ ctx: { userId } }) => tasksController.create(userId)),
+  findAll: protectedProcedure.query(tasksController.findAll),
 });
 
 export { tasksRouter };

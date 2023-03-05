@@ -1,8 +1,13 @@
-import { createTaskController } from './create-task.controller';
+import { createController } from './create.controller';
+import { findAllController } from './find-all.controller';
 
 class TasksController {
   create(userId: string) {
-    return createTaskController.run(userId);
+    return createController.run(userId);
+  }
+
+  findAll() {
+    return findAllController.run();
   }
 }
 
