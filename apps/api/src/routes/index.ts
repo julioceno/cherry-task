@@ -1,5 +1,5 @@
 import { publicProcedure, router } from '../trpc';
-import { authenticateRouter } from './authenticate.router';
+import { privateRouter } from './private.router';
 
 import { authenticateController, userController } from '../app/controllers/';
 import { authenticateSchema, createUserSchema } from '../app/schemas';
@@ -12,7 +12,7 @@ const appRouter = router({
   authenticate: publicProcedure
     .input(authenticateSchema)
     .mutation(async ({ input }) => authenticateController.authenticate(input)),
-  authenticateRouter,
+  privateRouter,
 });
 
 export type AppRouter = typeof appRouter;

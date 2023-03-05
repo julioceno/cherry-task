@@ -7,19 +7,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useState } from 'react';
 import { Spacer } from '../../components';
-import { ListCards, ModalCreateTask } from './components';
+import { ListCards } from './components';
 import { useStyles } from './styles';
 
 function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-
-  function handleClose() {
-    setOpen(false);
-  }
 
   return (
     <Grid container spacing={2} className={classes.container}>
@@ -46,12 +40,11 @@ function Tasks() {
             right: theme.spacing(10),
             bottom: theme.spacing(10),
           }}
-          onClick={() => setOpen(true)}
+          onClick={() => null}
         >
           <AddIcon color='secondary' />
         </Fab>
       </Tooltip>
-      <ModalCreateTask open={open} handleClose={handleClose} />
     </Grid>
   );
 }

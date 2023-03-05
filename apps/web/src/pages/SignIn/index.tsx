@@ -15,6 +15,7 @@ import { useStyles } from './styles';
 import { LoginInput } from './types';
 import { LoginSchema } from './validation';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const initialValues: LoginInput = {
   username: '',
@@ -26,6 +27,7 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const authenticate = trpc.authenticate.useMutation();
 
@@ -41,7 +43,8 @@ function SignIn() {
 
     authenticate.mutate(formattedData, {
       onSuccess(value) {
-        localStorage.setItem('token', value.token);
+        setCookie('token', value.token, { path: '/' });
+
         navigate('/tasks');
         setLoading(false);
       },

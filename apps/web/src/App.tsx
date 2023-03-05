@@ -12,8 +12,11 @@ import { theme } from './theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Snackbar } from './components/Snackbar';
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { useCookies } from 'react-cookie';
 
 function App() {
+  const [cookies] = useCookies(['token']);
+
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -22,9 +25,7 @@ function App() {
           url: 'http://localhost:3333/cherry-tasks', // TODO: colocar isso num .env
           headers() {
             return {
-              authorization: localStorage.getItem('token')
-                ? `Bearer ${localStorage.getItem('token')}`
-                : undefined,
+              authorization: `Bearer ${cookies.token}`,
             };
           },
         }),
