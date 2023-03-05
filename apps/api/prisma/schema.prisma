@@ -16,5 +16,37 @@ model User {
   email    String @unique
   password String
 
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  tasks Task[]
+
   @@map("users")
+}
+
+model Task {
+  id          String @id @default(uuid())
+  name        String
+  description String
+  userId      String
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  steps Step[]
+  User  User   @relation(fields: [userId], references: [id])
+
+  @@map("tasks")
+}
+
+model Step {
+  id      String  @id @default(uuid())
+  checked Boolean @default(false)
+  title   String
+  taskId  String
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  Task Task @relation(fields: [taskId], references: [id])
 }
