@@ -1,5 +1,6 @@
 import { createController } from './create.controller';
 import { findAllController } from './find-all.controller';
+import { updateController } from './update.controller';
 
 class TasksController {
   create(userId: string) {
@@ -8,6 +9,10 @@ class TasksController {
 
   findAll() {
     return findAllController.run();
+  }
+
+  update() {
+    return updateController.run();
   }
 }
 

@@ -1,13 +1,16 @@
 import { protectedProcedure } from '../app/middlewares';
 import { router } from '../trpc';
-import { createTaskSchema } from '../app/schemas';
+import { updateTaskSchema } from '../app/schemas';
 import { tasksController } from '../app/controllers';
 
 const tasksRouter = router({
   create: protectedProcedure
-    .input(createTaskSchema)
+    .input(updateTaskSchema)
     .mutation(async ({ ctx: { userId } }) => tasksController.create(userId)),
   findAll: protectedProcedure.query(tasksController.findAll),
+  update: protectedProcedure
+    .input(updateTaskSchema)
+    .mutation(() => tasksController.update()),
 });
 
 export { tasksRouter };
