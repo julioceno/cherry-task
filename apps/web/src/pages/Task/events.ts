@@ -107,6 +107,11 @@ class Events {
     const index = this.tasks.findIndex((task) => task.id === id);
     return index;
   }
+
+  clear() {
+    this.tasks = [this.createTask()];
+    this.idLastCreated = null;
+  }
 }
 
 export const events = new Events();

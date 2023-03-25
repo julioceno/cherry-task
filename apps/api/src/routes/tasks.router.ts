@@ -10,7 +10,7 @@ const tasksRouter = router({
   findAll: protectedProcedure.query(tasksController.findAll),
   update: protectedProcedure
     .input(updateTaskSchema)
-    .mutation(() => tasksController.update()),
+    .mutation(({ input }) => tasksController.update('', input)),
 });
 
 export { tasksRouter };

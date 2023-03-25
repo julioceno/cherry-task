@@ -42,7 +42,7 @@ function SignUp() {
 
     authenticate.mutate(formattedData, {
       onSuccess(value) {
-        localStorage.setItem('token', value.token);
+        localStorage.setItem('token', value.token); // mudar
         navigate('/tasks');
       },
       onError(value) {

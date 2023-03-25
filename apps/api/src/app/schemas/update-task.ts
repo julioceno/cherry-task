@@ -10,6 +10,13 @@ export const updateTaskSchema = z.object({
       required_error: MessagesZod.MESSAGE_FIELD_REQUIRED('description'),
     })
     .optional(),
+  steps: z.array(
+    z.object({
+      id: z.string(),
+      label: z.string().optional(),
+      checked: z.boolean(),
+    })
+  ),
 });
 
 export type UpdateTaskInput = z.TypeOf<typeof updateTaskSchema>;

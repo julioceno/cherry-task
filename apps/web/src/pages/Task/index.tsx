@@ -4,38 +4,75 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
+import { trpc } from '../../utils';
 import { SnackbarSaveDocument } from './components';
 import { events } from './events';
 import { useStyles } from './styles';
+import { ITask } from './types';
+
+interface Props {
+  name: string;
+  description: string;
+  tasks: ITask[];
+}
+
+const format = ({ name, description, tasks }: Props) => {
+  const obj = {
+    name,
+    description,
+    tasks,
+  };
+
+  return JSON.stringify(obj);
+};
 
 export const Task = observer(() => {
   const theme = useTheme();
   const classes = useStyles();
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
+  const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
   const formik = useFormik({
     initialValues: {
-      name: 'Título',
+      name: '',
       description: '',
       steps: [],
     },
 
     onSubmit: (values) => {
-      /*     setOpenSnackbar(true);
+      function formatData() {
+        return {
+          name: values.name ?? undefined,
+          description: values.description ?? undefined,
+        };
+      }
 
-      setTimeout(() => {
-        setOpenSnackbar(false);
-      }, 2000); */
+      updateTask.mutate(formatData());
     },
   });
+  const { values } = formik;
 
   useEffect(() => {
     events.handleOnFocusInLastCreated();
   }, [events.tasks]);
 
   useEffect(() => {
+    localStorage.setItem(
+      'task',
+      format({
+        name: values.name,
+        description: values.description,
+        tasks: events.tasks,
+      })
+    );
+  }, [events.tasks, values.name, values.description]);
+
+  useEffect(() => {
     return () => {
       formik.handleSubmit();
+
+      localStorage.removeItem('task');
+      events.clear();
     };
   }, []);
 
@@ -49,7 +86,7 @@ export const Task = observer(() => {
           placeholder='Insira o título da tarefa'
           name='name'
           onChange={formik.handleChange}
-          value={formik.values.name}
+          value={values.name}
           styles={{
             fontSize: theme.spacing(12),
             fontWeight: 'bold',
@@ -65,7 +102,7 @@ export const Task = observer(() => {
           placeholder='Descrição...'
           name='description'
           styles={{ fontSize: theme.spacing(5) }}
-          value={formik.values.description}
+          value={values.description}
           onChange={formik.handleChange}
         />
       </Grid>
