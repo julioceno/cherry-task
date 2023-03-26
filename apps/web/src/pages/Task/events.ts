@@ -9,7 +9,7 @@ class Events {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  tasks: ITask[] = [this.createTask()];
+  tasks: ITask[] = [this.createTask()]; // FIXME arrumar um nome melhor para tasks
   setTasks(tasks: ITask[]) {
     this.tasks = tasks;
   }

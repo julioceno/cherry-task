@@ -8,8 +8,8 @@ class TasksController {
     return createController.run(userId);
   }
 
-  findAll() {
-    return findAllController.run();
+  findAll(userId: string) {
+    return findAllController.run(userId);
   }
 
   update(body: UpdateTaskInput) {

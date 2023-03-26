@@ -20,7 +20,7 @@ class TaskEntity {
     this.name = task.name;
     this.description = task.description;
 
-    this.steps = steps.map((step) => new StepEntity(step));
+    this.steps = steps?.map((step) => new StepEntity(step));
 
     this.createdAt = task.createdAt;
     this.updatedAt = task.updatedAt;

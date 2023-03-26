@@ -6,10 +6,12 @@ const prisma = new PrismaClient();
 
 class UpdateController {
   async run(body: UpdateTaskInput) {
+    // TODO: validar se o usuário que esta tentando alterar é o mesmo usuário que criou a tarefa
+
     const updatedTask = await prisma.$transaction(async (prisma) => {
       body.steps.map((step) =>
         prisma.step.upsert({
-          where: { id: step.id },
+          where: { id: undefined },
           update: {
             title: step.label,
             checked: step.checked,
@@ -22,6 +24,8 @@ class UpdateController {
         })
       );
 
+      console.log(body.steps);
+
       return prisma.task.update({
         where: { id: body.id },
         data: {
@@ -32,6 +36,7 @@ class UpdateController {
       });
     });
 
+    console.log(updatedTask);
     return new TaskEntity(updatedTask);
   }
 }

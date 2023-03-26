@@ -15,8 +15,6 @@ function ResourceNotImplemented() {
 
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
-  console.log(isDownMd);
-
   return (
     <Grid
       container

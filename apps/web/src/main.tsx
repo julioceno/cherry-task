@@ -10,7 +10,9 @@ import '@fontsource/montserrat/600.css';
 import '@fontsource/montserrat/700.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <React.Suspense>
     <App />
-  </React.StrictMode>
+  </React.Suspense>
 );
+
+// TODO: O React pode esta com o Suspense pois tenho que renderizar meu retorno de destruição de componente uma unica vez, pois assim, fazemos uma escrita no banco. Dessa forma, desabilitei para evitar trabalho

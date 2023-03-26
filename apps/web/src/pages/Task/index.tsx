@@ -2,9 +2,10 @@ import { Box, Divider, Grid, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
-import { trpc } from '../../utils';
+import { snackbarStore, trpc } from '../../utils';
 import { SnackbarSaveDocument } from './components';
 import { events } from './events';
 import { useStyles } from './styles';
@@ -29,7 +30,8 @@ const format = ({ name, description, tasks }: Props) => {
 export const Task = observer(() => {
   const theme = useTheme();
   const classes = useStyles();
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbar] = useState(false);
+  const { id } = useParams<{ id: string }>();
 
   const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
   const formik = useFormik({
@@ -40,14 +42,27 @@ export const Task = observer(() => {
     },
 
     onSubmit: (values) => {
-      function formatData() {
-        return {
-          name: values.name ?? undefined,
-          description: values.description ?? undefined,
-        };
+      if (!id) {
+        snackbarStore.setMessage('Houve um problema.');
+        return;
       }
 
-      updateTask.mutate(formatData());
+      updateTask.mutate(
+        {
+          id,
+          name: values.name ?? undefined,
+          description: values.description ?? undefined,
+          steps: events.tasks.map(({ focus, ...step }) => ({
+            ...step,
+            label: step.label ?? undefined,
+          })),
+        },
+        {
+          onError: () => {
+            snackbarStore.setMessage('Houve um problema');
+          },
+        }
+      );
     },
   });
   const { values } = formik;
@@ -68,6 +83,8 @@ export const Task = observer(() => {
   }, [events.tasks, values.name, values.description]);
 
   useEffect(() => {
+    console.log('entrou');
+
     return () => {
       formik.handleSubmit();
 

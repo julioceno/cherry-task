@@ -7,6 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../components';
 import { trpc } from '../../utils';
@@ -35,6 +36,10 @@ function Tasks() {
     );
   }
 
+  useEffect(() => {
+    tasks.refetch();
+  }, []);
+
   return (
     <Grid container spacing={2} className={classes.container}>
       <Grid item>
@@ -52,8 +57,8 @@ function Tasks() {
         {tasks.data?.map((card) => (
           <Card
             id={card.id}
-            title={card.name ?? 'Sem título'}
-            description={card.description ?? 'Sem descrição'}
+            title={card.name || 'Sem título'}
+            description={card.description || 'Sem descrição'}
           />
         ))}
       </Grid>

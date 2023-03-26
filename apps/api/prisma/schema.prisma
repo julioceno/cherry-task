@@ -41,8 +41,8 @@ model Task {
 
 model Step {
   id      String  @id @default(uuid())
-  checked Boolean @default(false)
   title   String?
+  checked Boolean @default(false)
   taskId  String
 
   createdAt DateTime  @default(now()) @map("created_at")
