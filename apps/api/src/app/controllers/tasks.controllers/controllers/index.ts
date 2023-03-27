@@ -1,6 +1,7 @@
 import { UpdateTaskInput } from '../../../schemas';
 import { createController } from './create.controller';
 import { findAllController } from './find-all.controller';
+import { findOneController, FindOneController } from './find-one.controller';
 import { updateController } from './update.controller';
 
 class TasksController {
@@ -10,6 +11,10 @@ class TasksController {
 
   findAll(userId: string) {
     return findAllController.run(userId);
+  }
+
+  findOne(taskId: string, userId: string) {
+    return findOneController.run(taskId, userId);
   }
 
   update(body: UpdateTaskInput) {

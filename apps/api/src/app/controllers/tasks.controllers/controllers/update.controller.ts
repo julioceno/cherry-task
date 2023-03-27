@@ -24,8 +24,6 @@ class UpdateController {
         })
       );
 
-      console.log(body.steps);
-
       return prisma.task.update({
         where: { id: body.id },
         data: {
@@ -36,7 +34,6 @@ class UpdateController {
       });
     });
 
-    console.log(updatedTask);
     return new TaskEntity(updatedTask);
   }
 }

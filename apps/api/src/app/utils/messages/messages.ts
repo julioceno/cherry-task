@@ -1,5 +1,6 @@
-const MessagesZod = {
+const Messages = {
   MESSAGE_REQUIRED: 'O campo em específico é obrigatório.',
+  MESSAGE_TASK_NOTFOUND: `Tarefa não foi encontrada.`,
 
   MESSAGE_FIELD_REQUIRED: (field: string) =>
     `O campo '${field} é obrigatório.'`,
@@ -16,4 +17,4 @@ const MessagesZod = {
     `O campo '${field} deve ser um booleano.'`,
 };
 
-export { MessagesZod };
+export { Messages };

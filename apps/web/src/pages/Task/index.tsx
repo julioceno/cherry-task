@@ -1,7 +1,16 @@
-import { Box, Divider, Grid, useTheme } from '@mui/material';
+import { TaskAlt } from '@mui/icons-material';
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  LinearProgress,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
@@ -9,6 +18,7 @@ import { snackbarStore, trpc } from '../../utils';
 import { SnackbarSaveDocument } from './components';
 import { events } from './events';
 import { useStyles } from './styles';
+import { timer } from './timer';
 import { ITask } from './types';
 
 interface Props {
@@ -17,14 +27,14 @@ interface Props {
   tasks: ITask[];
 }
 
-const format = ({ name, description, tasks }: Props) => {
+const saveTaskLocalStorage = ({ name, description, tasks }: Props) => {
   const obj = {
     name,
     description,
     tasks,
   };
 
-  return JSON.stringify(obj);
+  localStorage.setItem('task', JSON.stringify(obj));
 };
 
 export const Task = observer(() => {
@@ -67,24 +77,24 @@ export const Task = observer(() => {
   });
   const { values } = formik;
 
+  timer.setExecute(() => formik.handleSubmit());
+
   useEffect(() => {
     events.handleOnFocusInLastCreated();
   }, [events.tasks]);
 
   useEffect(() => {
-    localStorage.setItem(
-      'task',
-      format({
-        name: values.name,
-        description: values.description,
-        tasks: events.tasks,
-      })
-    );
+    saveTaskLocalStorage({
+      name: values.name,
+      description: values.description,
+      tasks: events.tasks,
+    });
+
+    timer.setReset();
+    timer.setResume();
   }, [events.tasks, values.name, values.description]);
 
   useEffect(() => {
-    console.log('entrou');
-
     return () => {
       formik.handleSubmit();
 

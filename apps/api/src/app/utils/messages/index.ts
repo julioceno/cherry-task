@@ -1,1 +1,1 @@
-export * from './messagesZod';
+export * from './messages';

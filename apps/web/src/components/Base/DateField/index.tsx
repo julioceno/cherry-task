@@ -18,7 +18,6 @@ function DateField({ label, fullWidth = true, ...rest }: DateFieldProps) {
   const theme = useTheme();
 
   const handleChange = (value: Nullable<Date>) => {
-    console.log(value);
     rest.handleChange?.(value);
     /*     setValue(value ? value.toISOString() : null); */
   };
