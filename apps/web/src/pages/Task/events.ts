@@ -56,7 +56,6 @@ class Events {
   }
 
   deleteStep(indice: number) {
-    console.log('step');
     if (this.tasks.length === 1) return this.setTasks([this.createTask()]);
     const newTasks = this.tasks.filter((task) => task.indice !== indice);
     this.setTasks(newTasks);
@@ -107,6 +106,23 @@ class Events {
   #findIndex(indice: number) {
     const index = this.tasks.findIndex((task) => task.indice === indice);
     return index;
+  }
+
+  populateSteps(
+    steps?: { id: string; title: Nullable<string>; checked: boolean }[]
+  ) {
+    if (!steps) {
+      return (this.tasks = [this.createTask()]);
+    }
+
+    const values: ITask[] = steps.map((step, indice) => ({
+      indice: indice + 1,
+      focus: false,
+      label: step.title,
+      ...step,
+    }));
+
+    this.tasks = values;
   }
 
   clear() {

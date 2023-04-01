@@ -20,6 +20,7 @@ import { events } from './events';
 import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
+import { useBeforeunload } from 'react-beforeunload';
 
 interface Props {
   name: string;
@@ -27,30 +28,13 @@ interface Props {
   tasks: ITask[];
 }
 
-function StatusChange({
-  hasChange,
-  loading,
-}: {
-  hasChange: Nullable<boolean>;
-  loading: boolean;
-}) {
-  if (loading) {
-    return (
-      <React.Fragment>
-        <CircularProgress size={20} color='blackButton' />
-        <Spacer x={1} />
-        <Spacer x={2} />
-        <Typography fontStyle='italic'>Salvando...</Typography>
-      </React.Fragment>
-    );
-  }
-
+function StatusChange({ hasChange }: { hasChange: Nullable<boolean> }) {
   if (hasChange) {
     return (
       <React.Fragment>
         <ReplayIcon />
         <Spacer x={1} />
-        <Typography fontStyle='italic'>Alterações pendentes</Typography>
+        <Typography fontStyle='italic'>Salvando alterações</Typography>
       </React.Fragment>
     );
   }
@@ -95,7 +79,6 @@ export const Task = observer(() => {
     initialValues: {
       name: task.data?.name ?? '',
       description: task.data?.description ?? '',
-      steps: task.data?.steps,
     },
 
     onSubmit: (values) => {
@@ -110,10 +93,12 @@ export const Task = observer(() => {
           id,
           name: values.name ?? undefined,
           description: values.description ?? undefined,
-          steps: events.tasks.map(({ focus, ...step }) => ({
-            ...step,
-            label: step.label ?? undefined,
-          })),
+          steps: events.tasks.map(({ focus, ...step }) => {
+            return {
+              ...step,
+              label: step.label ?? undefined,
+            };
+          }),
         },
         {
           onError: () => {
@@ -146,11 +131,19 @@ export const Task = observer(() => {
     timer.setResume();
   }
 
+  useBeforeunload((event) => {
+    if (hasChange) {
+      event.preventDefault();
+    }
+  });
+
   useEffect(() => {
     events.handleOnFocusInLastCreated();
   }, [events.tasks]);
 
   useEffect(() => {
+    events.populateSteps(task.data?.steps);
+
     return () => {
       formik.handleSubmit();
 
@@ -159,15 +152,12 @@ export const Task = observer(() => {
     };
   }, []);
 
-  if (!id) {
-    // Redirecionar o usuario para uma rota de erro
-  }
-
   return (
     <Grid container className={classes.container} spacing={2}>
       <Grid item>
         <Spacer y={30} />
       </Grid>
+
       <Grid item xs={12}>
         <TextFieldDocument
           placeholder='Insira o título da tarefa'
@@ -204,7 +194,7 @@ export const Task = observer(() => {
         ml={2}
         mt={hasChange !== null ? 3 : undefined}
       >
-        <StatusChange hasChange={hasChange} loading={updateTask.isLoading} />
+        <StatusChange hasChange={hasChange} />
       </Box>
       <Grid item xs={12} spacing={2} component={Box}>
         {events.tasks.map((item, index) => (

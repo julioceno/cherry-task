@@ -10,7 +10,6 @@ class UpdateController {
 
     const updatedTask = await prisma.$transaction(async (prisma) => {
       /*   for (let step of body.steps) {
-        console.log('maloka', step.id);
         await prisma.step.upsert({
           where: { id: step?.id ?? undefined },
           update: {
@@ -35,8 +34,6 @@ class UpdateController {
         include: { steps: true },
       });
     });
-
-    console.log(body.steps);
 
     return new TaskEntity(updatedTask);
   }
