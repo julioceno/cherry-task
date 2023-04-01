@@ -56,6 +56,7 @@ class Events {
   }
 
   deleteStep(id: string) {
+    console.log('step');
     if (this.tasks.length === 1) return this.setTasks([this.createTask()]);
     const newTasks = this.tasks.filter((task) => task.id !== id);
     this.setTasks(newTasks);

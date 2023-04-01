@@ -2,6 +2,7 @@ import { CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Form, Formik } from 'formik';
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
@@ -29,6 +30,7 @@ function SignUp() {
   const theme = useTheme();
 
   const authenticate = trpc.createUser.useMutation();
+  const [, setCookie] = useCookies(['token']);
 
   function handleSubmit(values: CreateUserInput) {
     const { username, email, password, passwordConfirm } = values;
@@ -42,7 +44,7 @@ function SignUp() {
 
     authenticate.mutate(formattedData, {
       onSuccess(value) {
-        localStorage.setItem('token', value.token); // mudar
+        setCookie('token', value.token);
         navigate('/tasks');
       },
       onError(value) {

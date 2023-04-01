@@ -18,7 +18,6 @@ export class FindOneController {
         message: Messages.MESSAGE_TASK_NOTFOUND,
       });
     }
-    console.log('task', task);
 
     return new TaskEntity(task);
   }

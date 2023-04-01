@@ -49,4 +49,6 @@ model Step {
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   Task Task @relation(fields: [taskId], references: [id])
+
+  @@map("steps")
 }

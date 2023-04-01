@@ -24,16 +24,13 @@ const initialValues: LoginInput = {
 
 function SignIn() {
   const classes = useStyles();
-  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const [, setCookie] = useCookies(['token']);
 
   const authenticate = trpc.authenticate.useMutation();
 
   function handleSubmit(values: LoginInput) {
-    setLoading(true);
-
     const { username, password } = values;
 
     const formattedData = {
@@ -46,10 +43,8 @@ function SignIn() {
         setCookie('token', value.token, { path: '/' });
 
         navigate('/tasks');
-        setLoading(false);
       },
       onError(value) {
-        setLoading(false);
         snackbarStore.setMessage(
           value.message ??
             'Não foi possível autenticar, verifique se suas credenciais estão corretas'
@@ -159,10 +154,10 @@ function SignIn() {
                       variant='contained'
                       color='blackButton'
                       type='submit'
-                      disabled={loading}
+                      disabled={authenticate.isLoading}
                       fullWidth
                     >
-                      {loading ? (
+                      {authenticate.isLoading ? (
                         <CircularProgress size={25} color='blackButton' />
                       ) : (
                         'Entrar'

@@ -31,12 +31,6 @@ function CheckboxDocument({
     setHover(!hover);
   };
 
-  const handleOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === KeysEnum.ENTER) {
-      createStep();
-    }
-  };
-
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     handleOnChangeCustomize(value);

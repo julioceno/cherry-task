@@ -12,6 +12,9 @@ class FindAllController {
       include: {
         steps: true,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
 
     const entities = tasks.map((task) => new TaskEntity(task));
