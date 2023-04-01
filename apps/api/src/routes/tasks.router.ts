@@ -18,7 +18,9 @@ const tasksRouter = router({
     ),
   update: protectedProcedure
     .input(updateTaskSchema)
-    .mutation(({ input }) => tasksController.update(input)),
+    .mutation(({ input, ctx: { userId } }) =>
+      tasksController.update(userId, input)
+    ),
 });
 
 export { tasksRouter };

@@ -17,8 +17,8 @@ class TasksController {
     return findOneController.run(taskId, userId);
   }
 
-  update(body: UpdateTaskInput) {
-    return updateController.run(body);
+  update(userId: string, body: UpdateTaskInput) {
+    return updateController.run(userId, body);
   }
 }
 
