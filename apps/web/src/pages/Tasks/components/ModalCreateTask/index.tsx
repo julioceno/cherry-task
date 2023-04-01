@@ -5,7 +5,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Form, Formik } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
-  DateInput,
   PrimaryButton,
   SelectInput,
   SelectOption,
@@ -71,12 +70,6 @@ function ModalCreateTask({ open, handleClose }: Props) {
                       name='type'
                       color='primary'
                       options={options}
-                    />
-                  </Grid>
-                  <Grid item md={6} xs={12}>
-                    <DateInput
-                      label='Data de finalização (Opcional)'
-                      name='dateFinalize'
                     />
                   </Grid>
                 </Grid>

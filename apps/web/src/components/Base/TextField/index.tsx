@@ -1,5 +1,4 @@
 import { TextField, TextFieldProps, useTheme } from '@mui/material';
-import { useStyles } from './styles';
 
 interface ITextFieldProps extends Omit<TextFieldProps, 'label' | 'name'> {
   label: string;
@@ -14,7 +13,6 @@ function CustomTextField({
   ...rest
 }: ITextFieldProps) {
   const theme = useTheme();
-  const classes = useStyles();
 
   return (
     <TextField
@@ -27,7 +25,6 @@ function CustomTextField({
         },
       }}
       variant={variant}
-      className={classes.root}
       {...rest}
     />
   );
