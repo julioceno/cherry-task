@@ -14,33 +14,33 @@ class Events {
     this.tasks = tasks;
   }
 
-  idLastCreated: Nullable<string> = null;
-  setLastCreated(id: Nullable<string>) {
-    this.idLastCreated = id;
+  indiceLastCreated: Nullable<number> = null;
+  setLastCreated(indice: Nullable<number>) {
+    this.indiceLastCreated = indice;
   }
 
-  #handleOnFocus(id: string) {
-    document.getElementById(id)?.focus();
+  #handleOnFocus(indice: number) {
+    document.getElementById(indice?.toString())?.focus();
   }
 
   handleOnFocusInLastCreated() {
-    if (this.idLastCreated) {
-      this.#handleOnFocus(this.idLastCreated);
+    if (this.indiceLastCreated) {
+      this.#handleOnFocus(this.indiceLastCreated);
       this.setLastCreated(null);
     }
   }
 
   createTask(): ITask {
     return {
-      id: uuidv4(),
+      indice: this.tasks?.length ? this.tasks.length + 1 : 1,
       label: null,
       checked: false,
       focus: true,
     };
   }
 
-  createStep(id: string) {
-    const index = this.tasks.findIndex((task) => task.id == id);
+  createStep(indice: number) {
+    const index = this.tasks.findIndex((task) => task.indice == indice);
 
     const tempTasks = this.tasks.map((task) => ({
       ...task,
@@ -49,69 +49,69 @@ class Events {
 
     const newElement = this.createTask();
     tempTasks.splice(index + 1, 0, newElement);
-    this.setLastCreated(newElement.id);
+    this.setLastCreated(newElement.indice);
     this.setTasks(tempTasks);
 
-    this.#handleOnFocus(newElement.id);
+    this.#handleOnFocus(newElement.indice);
   }
 
-  deleteStep(id: string) {
+  deleteStep(indice: number) {
     console.log('step');
     if (this.tasks.length === 1) return this.setTasks([this.createTask()]);
-    const newTasks = this.tasks.filter((task) => task.id !== id);
+    const newTasks = this.tasks.filter((task) => task.indice !== indice);
     this.setTasks(newTasks);
   }
 
-  handleOnChange(id: string, value: Nullable<string>) {
-    const index = this.#findIndex(id);
+  handleOnChange(indice: number, value: Nullable<string>) {
+    const index = this.#findIndex(indice);
 
     const tempTasks = Array.from(this.tasks);
     tempTasks[index].label = value;
     this.setTasks(tempTasks);
   }
 
-  handleOnKeyUp(id: string, event: KeyboardEvent<HTMLInputElement>) {
+  handleOnKeyUp(indice: number, event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === KeysEnum.ENTER) {
-      return this.createStep(id);
+      return this.createStep(indice);
     }
 
     if (event.key === KeysEnum.BACKSPACE) {
-      this.#onKeyBackspace(id);
+      this.#onKeyBackspace(indice);
     }
   }
 
-  #onKeyBackspace(id: string) {
-    const index = this.#findIndex(id);
+  #onKeyBackspace(indice: number) {
+    const index = this.#findIndex(indice);
     if (!index) return;
 
     const element = this.tasks[index] as ITask;
 
     if (!element.label?.length && element.label !== null)
-      return this.handleOnChange(id, null);
+      return this.handleOnChange(indice, null);
 
     if (element.label === null) {
-      this.deleteStep(id);
+      this.deleteStep(indice);
 
-      const getLastId = this.tasks[index - 1].id;
-      this.#handleOnFocus(getLastId);
+      const getLastIndice = this.tasks[index - 1].indice;
+      this.#handleOnFocus(getLastIndice);
     }
   }
 
-  toggleCheckbox(id: string) {
-    const index = this.tasks.findIndex((task) => task.id == id);
+  toggleCheckbox(indice: number) {
+    const index = this.tasks.findIndex((task) => task.indice == indice);
     const tasks = Array.from(this.tasks);
     tasks[index].checked = !tasks[index].checked;
     this.setTasks(tasks);
   }
 
-  #findIndex(id: string) {
-    const index = this.tasks.findIndex((task) => task.id === id);
+  #findIndex(indice: number) {
+    const index = this.tasks.findIndex((task) => task.indice === indice);
     return index;
   }
 
   clear() {
     this.tasks = [this.createTask()];
-    this.idLastCreated = null;
+    this.indiceLastCreated = null;
   }
 }
 

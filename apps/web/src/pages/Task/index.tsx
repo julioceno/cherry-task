@@ -212,22 +212,22 @@ export const Task = observer(() => {
             <CheckboxDocument
               task={item}
               createStep={() => {
-                events.createStep(item.id);
+                events.createStep(item.indice);
               }}
               deleteStep={() => {
-                events.deleteStep(item.id);
+                events.deleteStep(item.indice);
               }}
               toggleCheckbox={() => {
                 handleChangeForm();
-                events.toggleCheckbox(item.id);
+                events.toggleCheckbox(item.indice);
               }}
               handleOnChange={(value) => {
                 handleChangeForm();
-                events.handleOnChange(item.id, value);
+                events.handleOnChange(item.indice, value);
               }}
               handleOnKeyUp={(event) => {
                 handleChangeForm();
-                events.handleOnKeyUp(item.id, event);
+                events.handleOnKeyUp(item.indice, event);
               }}
             />
           </Grid>

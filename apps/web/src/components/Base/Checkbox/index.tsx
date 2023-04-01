@@ -72,8 +72,8 @@ function CheckboxDocument({
         />
       </div>
       <TextFieldDocument
-        id={task.id}
-        name={`task-input-${task.id}`}
+        id={task.indice?.toString()}
+        name={`step-input-${task.indice}`}
         value={task.label || ''}
         styles={{
           fontSize: theme.spacing(4),
