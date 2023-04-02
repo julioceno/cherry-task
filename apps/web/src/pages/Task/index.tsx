@@ -1,6 +1,13 @@
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import ReplayIcon from '@mui/icons-material/Replay';
-import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
@@ -14,6 +21,7 @@ import { eventsStore } from './eventsStore';
 import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
+import { HandleErrorPage } from '../../components/HandleErrorPage';
 
 interface Props {
   name: string;
@@ -25,7 +33,7 @@ function StatusChange({ hasChange }: { hasChange: Nullable<boolean> }) {
   if (hasChange) {
     return (
       <React.Fragment>
-        <ReplayIcon />
+        <CircularProgress size={20} color='blackButton' />
         <Spacer x={1} />
         <Typography fontStyle='italic'>Salvando alterações</Typography>
       </React.Fragment>
@@ -64,8 +72,7 @@ export const Task = observer(() => {
   const { id } = useParams<{ id: string }>();
 
   const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!, {
-    retryOnMount: true,
-    refetchOnMount: true,
+    retry: 0,
   });
 
   const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
@@ -185,6 +192,15 @@ export const Task = observer(() => {
     };
   }, []);
 
+  if (task.isError) {
+    return (
+      <HandleErrorPage
+        status={task.error.data?.httpStatus}
+        error={task.error.message}
+      />
+    );
+  }
+
   return (
     <Grid container className={classes.container} spacing={2}>
       <Grid item>
@@ -232,9 +248,11 @@ export const Task = observer(() => {
             <CheckboxDocument
               task={item}
               createStep={() => {
+                handleChangeForm();
                 eventsStore.createStep(item.indice);
               }}
               deleteStep={() => {
+                handleChangeForm();
                 eventsStore.deleteStep(item.indice);
               }}
               toggleCheckbox={() => {
