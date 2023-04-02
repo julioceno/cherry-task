@@ -1,16 +1,10 @@
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import ReplayIcon from '@mui/icons-material/Replay';
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Grid,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Divider, Grid, Typography, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useBeforeunload } from 'react-beforeunload';
 import { useParams } from 'react-router-dom';
 import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
@@ -20,7 +14,6 @@ import { events } from './events';
 import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
-import { useBeforeunload } from 'react-beforeunload';
 
 interface Props {
   name: string;
@@ -70,9 +63,14 @@ export const Task = observer(() => {
   const [openSnackbar] = useState(false);
   const [hasChange, setHasChange] = useState<Nullable<boolean>>(null);
 
+  const utils = trpc.useContext();
+
   const { id } = useParams<{ id: string }>();
 
-  const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!);
+  const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!, {
+    retryOnMount: true,
+    refetchOnMount: true,
+  });
 
   const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
   const formik = useFormik({
@@ -101,6 +99,9 @@ export const Task = observer(() => {
           }),
         },
         {
+          async onSuccess(data) {
+            utils.privateRouter.tasksRouter.findOne.refetch();
+          },
           onError: () => {
             snackbarStore.setMessage('Houve um problema');
           },
@@ -119,12 +120,6 @@ export const Task = observer(() => {
   }
 
   function handleChangeForm() {
-    saveTaskLocalStorage({
-      name: values.name,
-      description: values.description,
-      tasks: events.tasks,
-    });
-
     setHasChange(true);
 
     timer.setReset();
@@ -138,6 +133,24 @@ export const Task = observer(() => {
   });
 
   useEffect(() => {
+    // FIXME verificar se ainda é necessário ao fim de projeto
+    saveTaskLocalStorage({
+      name: values.name,
+      description: values.description,
+      tasks: events.tasks,
+    });
+  }, [values.name, values.description, events.tasks]);
+
+  useEffect(() => {
+    if (task.isSuccess) {
+      formik.setValues({
+        name: task.data.name ?? '',
+        description: task.data.description ?? '',
+      });
+    }
+  }, [task.isLoading]);
+
+  useEffect(() => {
     events.handleOnFocusInLastCreated();
   }, [events.tasks]);
 
@@ -146,6 +159,30 @@ export const Task = observer(() => {
 
     return () => {
       formik.handleSubmit();
+      /*  const obj = JSON.parse(localStorage.getItem('task')!);
+
+      utils.privateRouter.tasksRouter.findAll.fetch().then((data) => {
+        const newArr = data.map((item) => {
+          if (item.id === id) {
+            return {
+              ...item,
+              name: obj.name,
+              description: obj.description,
+            };
+          }
+
+          return item;
+        });
+
+        utils.privateRouter.tasksRouter.findAll.setData(undefined, newArr);
+      });
+ */
+      /*  utils.privateRouter.tasksRouter.findOne.setData('', {
+        ...obj,
+        name: 'obj.name',
+        description: 'obj.description',
+      }); */
+      utils.privateRouter.tasksRouter.findAll.refetch();
 
       localStorage.removeItem('task');
       events.clear();

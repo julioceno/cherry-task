@@ -20,7 +20,10 @@ function Tasks() {
   const navigate = useNavigate();
 
   const createTask = trpc.privateRouter.tasksRouter.create.useMutation();
-  const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery();
+  const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery(undefined, {
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  });
 
   function handleCreateTask() {
     createTask.mutate(
@@ -35,10 +38,6 @@ function Tasks() {
       }
     );
   }
-
-  useEffect(() => {
-    tasks.refetch();
-  }, []);
 
   return (
     <Grid container spacing={2} className={classes.container}>
