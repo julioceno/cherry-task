@@ -1,5 +1,3 @@
-import CloudDoneIcon from '@mui/icons-material/CloudDone';
-import ReplayIcon from '@mui/icons-material/Replay';
 import {
   Box,
   CircularProgress,
@@ -13,15 +11,19 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { useBeforeunload } from 'react-beforeunload';
 import { useParams } from 'react-router-dom';
-import { Spacer, TextFieldDocument } from '../../components';
-import { CheckboxDocument } from '../../components/Base/Checkbox';
+import {
+  CheckboxDocument,
+  HandleErrorPage,
+  Spacer,
+  TextFieldDocument,
+  handleStateErrorsToRender,
+} from '../../components';
 import { snackbarStore, trpc } from '../../utils';
-import { SnackbarSaveDocument } from './components';
+import { StatusChange } from './components';
 import { eventsStore } from './eventsStore';
 import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
-import { HandleErrorPage } from '../../components/HandleErrorPage';
 
 interface Props {
   name: string;
@@ -29,28 +31,7 @@ interface Props {
   tasks: ITask[];
 }
 
-function StatusChange({ hasChange }: { hasChange: Nullable<boolean> }) {
-  if (hasChange) {
-    return (
-      <React.Fragment>
-        <CircularProgress size={20} color='blackButton' />
-        <Spacer x={1} />
-        <Typography fontStyle='italic'>Salvando alterações</Typography>
-      </React.Fragment>
-    );
-  }
-
-  return (
-    <React.Fragment>
-      <CloudDoneIcon />
-      <Spacer x={1} />
-      <Typography fontStyle='italic'>
-        Documento Sem alterações pendentes
-      </Typography>
-    </React.Fragment>
-  );
-}
-
+// FIXME: remover daqui
 const saveTaskLocalStorage = ({ name, description, tasks }: Props) => {
   const obj = {
     name,
@@ -61,10 +42,9 @@ const saveTaskLocalStorage = ({ name, description, tasks }: Props) => {
   localStorage.setItem('task', JSON.stringify(obj));
 };
 
-export const Task = observer(() => {
+export const TaskForm = observer(() => {
   const theme = useTheme();
   const classes = useStyles();
-  const [openSnackbar] = useState(false);
   const [hasChange, setHasChange] = useState<Nullable<boolean>>(null);
 
   const utils = trpc.useContext();
@@ -271,35 +251,16 @@ export const Task = observer(() => {
           </Grid>
         ))}
       </Grid>
-      <Grid>
-        {/*   <FormikProvider value={formik}>
-          <FieldArray
-            name='steps'
-            render={() => (
-              <div>
-                {formik.values.steps.map((item, index) => (
-                  <Grid item xs={12} key={index}>
-                    <CheckboxDocument
-                      task={item}
-                      createStep={() => events.createStep(item.id)}
-                      deleteStep={() => events.deleteStep(item.id)}
-                      toggleCheckbox={() => events.toggleCheckbox(item.id)}
-                      handleOnChange={(value) =>
-                        events.handleOnChange(item.id, value)
-                      }
-                      handleOnKeyUp={(event) =>
-                        events.handleOnKeyUp(item.id, event)
-                      }
-                    />
-                  </Grid>
-                ))}
-              </div>
-            )}
-          />
-        </FormikProvider> */}
-      </Grid>
-
-      <SnackbarSaveDocument open={openSnackbar} />
     </Grid>
   );
 });
+
+export const TaskMasterDetail = () => {
+  const { id } = useParams<{ id: string }>();
+
+  const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!, {
+    retry: 0,
+  });
+
+  return handleStateErrorsToRender<unknown>(task, <TaskForm />);
+};

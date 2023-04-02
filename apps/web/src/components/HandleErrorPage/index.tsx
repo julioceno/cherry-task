@@ -20,7 +20,6 @@ export function HandleErrorPage({
 }) {
   const classes = useStyles();
   const navigate = useNavigate();
-
   const theme = useTheme();
 
   const isDownMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -48,7 +47,6 @@ export function HandleErrorPage({
           <Typography paragraph>
             <strong>Mensagem: </strong> {error}
           </Typography>
-
           <Button onClick={() => navigate('/')}>Voltar ao Início</Button>
         </Grid>
       </Box>

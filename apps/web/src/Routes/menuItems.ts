@@ -1,5 +1,11 @@
 import React from 'react';
-import { Tasks, SignIn, SignUp, ResourceNotImplemented, Task } from '../pages';
+import {
+  Tasks,
+  SignIn,
+  SignUp,
+  ResourceNotImplemented,
+  TaskMasterDetail,
+} from '../pages';
 import { Resources } from './resources';
 import TaskIcon from '@mui/icons-material/Task';
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
@@ -54,7 +60,7 @@ const menuUnlistedItems: UnlistedItems[] = [
     name: Resources.TASK,
     label: 'Tarefa',
     pathname: '/task/:id',
-    component: Task,
+    component: TaskMasterDetail,
     unlisted: true,
   },
 ];
