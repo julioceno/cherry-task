@@ -1,10 +1,9 @@
 import { makeAutoObservable, autorun } from 'mobx';
 import { KeyboardEvent } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { KeysEnum } from '../../enums';
 import { ITask } from './types';
 
-class Events {
+class EventsStore {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
@@ -111,7 +110,7 @@ class Events {
   populateSteps(
     steps?: { id: string; title: Nullable<string>; checked: boolean }[]
   ) {
-    if (!steps) {
+    if (!steps?.length) {
       return (this.tasks = [this.createTask()]);
     }
 
@@ -131,4 +130,4 @@ class Events {
   }
 }
 
-export const events = new Events();
+export const eventsStore = new EventsStore();

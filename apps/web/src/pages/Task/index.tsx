@@ -10,7 +10,7 @@ import { Spacer, TextFieldDocument } from '../../components';
 import { CheckboxDocument } from '../../components/Base/Checkbox';
 import { snackbarStore, trpc } from '../../utils';
 import { SnackbarSaveDocument } from './components';
-import { events } from './events';
+import { eventsStore } from './eventsStore';
 import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
@@ -32,19 +32,15 @@ function StatusChange({ hasChange }: { hasChange: Nullable<boolean> }) {
     );
   }
 
-  if (hasChange === false) {
-    return (
-      <React.Fragment>
-        <CloudDoneIcon />
-        <Spacer x={1} />
-        <Typography fontStyle='italic'>
-          Documento Sem alterações pendentes
-        </Typography>
-      </React.Fragment>
-    );
-  }
-
-  return null;
+  return (
+    <React.Fragment>
+      <CloudDoneIcon />
+      <Spacer x={1} />
+      <Typography fontStyle='italic'>
+        Documento Sem alterações pendentes
+      </Typography>
+    </React.Fragment>
+  );
 }
 
 const saveTaskLocalStorage = ({ name, description, tasks }: Props) => {
@@ -91,7 +87,7 @@ export const Task = observer(() => {
           id,
           name: values.name ?? undefined,
           description: values.description ?? undefined,
-          steps: events.tasks.map(({ focus, ...step }) => {
+          steps: eventsStore.tasks.map(({ focus, ...step }) => {
             return {
               ...step,
               label: step.label ?? undefined,
@@ -137,12 +133,14 @@ export const Task = observer(() => {
     saveTaskLocalStorage({
       name: values.name,
       description: values.description,
-      tasks: events.tasks,
+      tasks: eventsStore.tasks,
     });
-  }, [values.name, values.description, events.tasks]);
+  }, [values.name, values.description, eventsStore.tasks]);
 
   useEffect(() => {
     if (task.isSuccess) {
+      eventsStore.populateSteps(task.data?.steps ?? [eventsStore.createTask()]);
+
       formik.setValues({
         name: task.data.name ?? '',
         description: task.data.description ?? '',
@@ -151,15 +149,13 @@ export const Task = observer(() => {
   }, [task.isLoading]);
 
   useEffect(() => {
-    events.handleOnFocusInLastCreated();
-  }, [events.tasks]);
+    eventsStore.handleOnFocusInLastCreated();
+  }, [eventsStore.tasks]);
 
   useEffect(() => {
-    events.populateSteps(task.data?.steps);
-
     return () => {
-      formik.handleSubmit();
-      /*  const obj = JSON.parse(localStorage.getItem('task')!);
+      /*  formik.handleSubmit();
+      const obj = JSON.parse(localStorage.getItem('task')!);
 
       utils.privateRouter.tasksRouter.findAll.fetch().then((data) => {
         const newArr = data.map((item) => {
@@ -176,16 +172,16 @@ export const Task = observer(() => {
 
         utils.privateRouter.tasksRouter.findAll.setData(undefined, newArr);
       });
- */
-      /*  utils.privateRouter.tasksRouter.findOne.setData('', {
+
+      utils.privateRouter.tasksRouter.findOne.setData('', {
         ...obj,
         name: 'obj.name',
         description: 'obj.description',
-      }); */
+      });
       utils.privateRouter.tasksRouter.findAll.refetch();
 
-      localStorage.removeItem('task');
-      events.clear();
+      localStorage.removeItem('task'); */
+      eventsStore.clear();
     };
   }, []);
 
@@ -194,7 +190,6 @@ export const Task = observer(() => {
       <Grid item>
         <Spacer y={30} />
       </Grid>
-
       <Grid item xs={12}>
         <TextFieldDocument
           placeholder='Insira o título da tarefa'
@@ -225,36 +220,34 @@ export const Task = observer(() => {
       <Grid item xs={12}>
         <Divider variant='fullWidth' />
       </Grid>
-      <Box
-        display='flex'
-        justifyItems='center'
-        ml={2}
-        mt={hasChange !== null ? 3 : undefined}
-      >
-        <StatusChange hasChange={hasChange} />
-      </Box>
+      <Grid item>
+        <Spacer y={1} />
+        <Box display='flex' justifyItems='center' ml={2}>
+          <StatusChange hasChange={hasChange} />
+        </Box>
+      </Grid>
       <Grid item xs={12} spacing={2} component={Box}>
-        {events.tasks.map((item, index) => (
+        {eventsStore.tasks.map((item, index) => (
           <Grid item xs={12} key={index}>
             <CheckboxDocument
               task={item}
               createStep={() => {
-                events.createStep(item.indice);
+                eventsStore.createStep(item.indice);
               }}
               deleteStep={() => {
-                events.deleteStep(item.indice);
+                eventsStore.deleteStep(item.indice);
               }}
               toggleCheckbox={() => {
                 handleChangeForm();
-                events.toggleCheckbox(item.indice);
+                eventsStore.toggleCheckbox(item.indice);
               }}
               handleOnChange={(value) => {
                 handleChangeForm();
-                events.handleOnChange(item.indice, value);
+                eventsStore.handleOnChange(item.indice, value);
               }}
               handleOnKeyUp={(event) => {
                 handleChangeForm();
-                events.handleOnKeyUp(item.indice, event);
+                eventsStore.handleOnKeyUp(item.indice, event);
               }}
             />
           </Grid>
