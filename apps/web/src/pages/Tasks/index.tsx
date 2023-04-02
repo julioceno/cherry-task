@@ -10,7 +10,7 @@ import {
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../components';
-import { trpc } from '../../utils';
+import { snackbarStore, trpc } from '../../utils';
 import { Card } from './components';
 import { useStyles } from './styles';
 
@@ -33,7 +33,7 @@ function Tasks() {
           navigate(`/task/${value.id}`);
         },
         onError: () => {
-          console.log('error');
+          snackbarStore.setMessage('Houve um problema ao criar a tarefa.');
         },
       }
     );

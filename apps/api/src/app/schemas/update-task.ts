@@ -15,10 +15,6 @@ export const updateTaskSchema = z.object({
     .optional(),
   steps: z.array(
     z.object({
-      id: z
-        .string()
-        .uuid({ message: Messages.MESSAGE_FIELD_UUID('id') })
-        .optional(),
       label: z
         .string({
           invalid_type_error: Messages.MESSAGE_FIELD_STRING('label'),

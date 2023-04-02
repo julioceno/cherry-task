@@ -19,8 +19,6 @@ export class FindOneController {
       });
     }
 
-    console.log('ryu', task);
-
     return new TaskEntity(task);
   }
 }

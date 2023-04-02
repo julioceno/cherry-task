@@ -10,31 +10,10 @@ class UpdateController {
   async run(userId: string, body: UpdateTaskInput) {
     await this.#verifycations(userId, body.id);
 
-    const updatedTask = await prisma.$transaction(async (prisma) => {
-      /*   for (let step of body.steps) {
-        await prisma.step.upsert({
-          where: { id: step?.id ?? undefined },
-          update: {
-            title: step.label,
-            checked: step.checked,
-            taskId: body.id,
-          },
-          create: {
-            title: step.label,
-            checked: step.checked,
-            taskId: body.id,
-          },
-        });
-      } */
-
-      return prisma.task.update({
-        where: { id: body.id },
-        data: {
-          name: body.name,
-          description: body.description,
-        },
-        include: { steps: true },
-      });
+    const updatedTask = await prisma.task.update({
+      where: { id: body.id },
+      data: this.#buildData(body),
+      include: { steps: true },
     });
 
     return new TaskEntity(updatedTask);
@@ -60,6 +39,24 @@ class UpdateController {
         message: Messages.MESSAGE_USER_NOT_PERMISSION,
       });
     }
+  }
+
+  #buildData(body: UpdateTaskInput): Prisma.TaskUpdateInput {
+    return {
+      name: body.name,
+      description: body.description,
+      steps: {
+        deleteMany: {
+          taskId: body.id,
+        },
+        createMany: {
+          data: body.steps.map((step) => ({
+            checked: step.checked,
+            title: step.label,
+          })),
+        },
+      },
+    };
   }
 }
 
