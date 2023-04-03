@@ -8,6 +8,7 @@ import {
   Theme,
 } from '@mui/material';
 import { ReactNode } from 'react';
+import { withStyles } from '@mui/styles';
 
 interface Props extends SnackbarProps {
   message: string;
@@ -15,13 +16,6 @@ interface Props extends SnackbarProps {
   severity?: AlertColor;
   onClose: () => void;
 }
-
-// TODO: depois ver essa questão
-const styles = (theme: Theme) => ({
-  close: {
-    padding: theme.spacing(1 / 2),
-  },
-});
 
 const SnackbarCustomer = ({
   message,
