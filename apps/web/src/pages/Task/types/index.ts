@@ -1,4 +1,4 @@
-export interface ITask {
+export interface IStep {
   id?: string;
   indice: number;
   label: Nullable<string>;

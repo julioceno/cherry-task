@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 const tasksRouter = router({
   create: protectedProcedure
-    .input(z.object({})) // FIXME Ver essa porra
+    .input(z.object({}))
     .mutation(({ ctx: { userId } }) => tasksController.create(userId)),
   findAll: protectedProcedure.query(({ ctx: { userId } }) =>
     tasksController.findAll(userId)

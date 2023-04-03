@@ -4,11 +4,11 @@ import { grey } from '@mui/material/colors';
 import { Box } from '@mui/system';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { KeysEnum } from '../../../enums';
-import { ITask } from '../../../pages/Task/types';
+import { IStep } from '../../../pages/Task/types';
 import { TextFieldDocument } from '../TextFieldDocument';
 
 interface Props {
-  task: ITask;
+  task: IStep;
   createStep: () => void;
   deleteStep: () => void;
   toggleCheckbox: () => void;

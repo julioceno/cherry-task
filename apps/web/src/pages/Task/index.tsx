@@ -23,7 +23,6 @@ import { StatusChange } from './components';
 import { eventsStore } from './eventsStore';
 import { useStyles } from './styles';
 import { timer } from './timer';
-import { ITask } from './types';
 
 export const TaskForm = observer(() => {
   const theme = useTheme();
@@ -55,7 +54,7 @@ export const TaskForm = observer(() => {
           id,
           name: values.name ?? undefined,
           description: values.description ?? undefined,
-          steps: eventsStore.tasks.map(({ focus, ...step }) => {
+          steps: eventsStore.steps.map(({ focus, ...step }) => {
             return {
               ...step,
               label: step.label ?? undefined,
@@ -98,7 +97,9 @@ export const TaskForm = observer(() => {
 
   useEffect(() => {
     if (task.isSuccess) {
-      eventsStore.populateSteps(task.data?.steps ?? [eventsStore.createTask()]);
+      eventsStore.populateSteps(
+        task.data?.steps ?? [eventsStore.createStepItem()]
+      );
 
       formik.setValues({
         name: task.data.name ?? '',
@@ -109,7 +110,7 @@ export const TaskForm = observer(() => {
 
   useEffect(() => {
     eventsStore.handleOnFocusInLastCreated();
-  }, [eventsStore.tasks]);
+  }, [eventsStore.steps]);
 
   return (
     <Grid container className={classes.container} spacing={2}>
@@ -153,7 +154,7 @@ export const TaskForm = observer(() => {
         </Box>
       </Grid>
       <Grid item xs={12} spacing={2} component={Box}>
-        {eventsStore.tasks.map((item, index) => (
+        {eventsStore.steps.map((item, index) => (
           <Grid item xs={12} key={index}>
             <CheckboxDocument
               task={item}
