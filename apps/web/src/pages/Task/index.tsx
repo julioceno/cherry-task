@@ -25,23 +25,6 @@ import { useStyles } from './styles';
 import { timer } from './timer';
 import { ITask } from './types';
 
-interface Props {
-  name: string;
-  description: string;
-  tasks: ITask[];
-}
-
-// FIXME: remover daqui
-const saveTaskLocalStorage = ({ name, description, tasks }: Props) => {
-  const obj = {
-    name,
-    description,
-    tasks,
-  };
-
-  localStorage.setItem('task', JSON.stringify(obj));
-};
-
 export const TaskForm = observer(() => {
   const theme = useTheme();
   const classes = useStyles();
@@ -51,9 +34,7 @@ export const TaskForm = observer(() => {
 
   const { id } = useParams<{ id: string }>();
 
-  const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!, {
-    retry: 0,
-  });
+  const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!);
 
   const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
   const formik = useFormik({
@@ -116,15 +97,6 @@ export const TaskForm = observer(() => {
   });
 
   useEffect(() => {
-    // FIXME verificar se ainda é necessário ao fim de projeto
-    saveTaskLocalStorage({
-      name: values.name,
-      description: values.description,
-      tasks: eventsStore.tasks,
-    });
-  }, [values.name, values.description, eventsStore.tasks]);
-
-  useEffect(() => {
     if (task.isSuccess) {
       eventsStore.populateSteps(task.data?.steps ?? [eventsStore.createTask()]);
 
@@ -138,48 +110,6 @@ export const TaskForm = observer(() => {
   useEffect(() => {
     eventsStore.handleOnFocusInLastCreated();
   }, [eventsStore.tasks]);
-
-  useEffect(() => {
-    return () => {
-      /*  formik.handleSubmit();
-      const obj = JSON.parse(localStorage.getItem('task')!);
-
-      utils.privateRouter.tasksRouter.findAll.fetch().then((data) => {
-        const newArr = data.map((item) => {
-          if (item.id === id) {
-            return {
-              ...item,
-              name: obj.name,
-              description: obj.description,
-            };
-          }
-
-          return item;
-        });
-
-        utils.privateRouter.tasksRouter.findAll.setData(undefined, newArr);
-      });
-
-      utils.privateRouter.tasksRouter.findOne.setData('', {
-        ...obj,
-        name: 'obj.name',
-        description: 'obj.description',
-      });
-      utils.privateRouter.tasksRouter.findAll.refetch();
-
-      localStorage.removeItem('task'); */
-      eventsStore.clear();
-    };
-  }, []);
-
-  if (task.isError) {
-    return (
-      <HandleErrorPage
-        status={task.error.data?.httpStatus}
-        error={task.error.message}
-      />
-    );
-  }
 
   return (
     <Grid container className={classes.container} spacing={2}>

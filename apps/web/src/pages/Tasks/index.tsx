@@ -19,6 +19,8 @@ function Tasks() {
   const classes = useStyles();
   const navigate = useNavigate();
 
+  const utils = trpc.useContext();
+
   const createTask = trpc.privateRouter.tasksRouter.create.useMutation();
   const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery(undefined, {
     refetchOnWindowFocus: true,

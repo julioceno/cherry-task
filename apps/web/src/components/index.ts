@@ -8,3 +8,4 @@ export * from './ConditionalTooltip';
 export * from './handleFetchStaterErro';
 export * from './HandleErrorPage';
 export * from './Loading';
+export * from './AvatarCustomer';

@@ -24,7 +24,7 @@ export interface UnlistedItems {
   label: string;
   pathname: string;
   publicRouter?: false;
-  unlisted?: true;
+  unlisted: true;
   component: () => JSX.Element;
 }
 
@@ -42,7 +42,7 @@ const menuItemsPrivate: PrivateItem[] = [
   {
     name: Resources.TASKS,
     label: 'Tarefas',
-    pathname: '/tasks',
+    pathname: '/',
     icon: TaskIcon,
     component: Tasks,
   },
@@ -82,10 +82,14 @@ const menuItemsPublic: PublicItem[] = [
   },
 ];
 
-const menuItems: Item[] = [
-  ...menuItemsPublic,
+const menuItemsPrivateList: Item[] = [
   ...menuItemsPrivate,
   ...menuUnlistedItems,
 ];
 
-export { menuItems, menuItemsPrivate, menuItemsPublic };
+export {
+  menuItemsPrivateList,
+  menuUnlistedItems,
+  menuItemsPrivate,
+  menuItemsPublic,
+};
