@@ -3,6 +3,7 @@ const Messages = {
   MESSAGE_TASK_NOTFOUND: 'Tarefa não foi encontrada.',
   MESSAGE_USER_NOT_PERMISSION:
     'O usuário não tem permissão para alterar essa task.',
+  MESSAGE_USER_NOT_EXISTS: 'Usuário não existe.',
 
   MESSAGE_FIELD_REQUIRED: (field: string) =>
     `O campo '${field} é obrigatório.'`,

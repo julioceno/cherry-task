@@ -12,6 +12,7 @@ import { RoutesComponent } from './Routes';
 import { Snackbar } from './components/Snackbar';
 import { config } from './config';
 import { theme } from './theme';
+import { userStore } from './stores';
 
 function App() {
   const [cookies] = useCookies(['token']);
@@ -30,6 +31,8 @@ function App() {
       ],
     })
   );
+
+  userStore.getAndValidateTokens();
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

@@ -3,7 +3,7 @@ import { middleware, publicProcedure } from '../../trpc';
 import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 
-interface TokenPayload {
+export interface TokenPayload {
   id: string;
 }
 

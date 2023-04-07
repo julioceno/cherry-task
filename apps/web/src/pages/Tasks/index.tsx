@@ -7,7 +7,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../../components';
 import { snackbarStore, trpc } from '../../utils';
@@ -18,8 +17,6 @@ function Tasks() {
   const theme = useTheme();
   const classes = useStyles();
   const navigate = useNavigate();
-
-  const utils = trpc.useContext();
 
   const createTask = trpc.privateRouter.tasksRouter.create.useMutation();
   const tasks = trpc.privateRouter.tasksRouter.findAll.useQuery(undefined, {

@@ -4,13 +4,17 @@ import bcrypt from 'bcrypt';
 import { UserEntity } from '../entities';
 import { tokenGenerate } from '../functions';
 import { AuthenticateInput } from '../schemas';
+import { config } from '../../config';
+import jwt from 'jsonwebtoken';
+import { TokenPayload } from '../middlewares';
+import { Messages } from '../utils';
 
 const prisma = new PrismaClient();
 
 class AuthenticateController {
   constructor() {}
 
-  async run({ username, password }: AuthenticateInput) {
+  async authenticate({ username, password }: AuthenticateInput) {
     const user = await prisma.user.findUnique({
       where: { username },
     });
@@ -18,7 +22,7 @@ class AuthenticateController {
     if (!user) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: 'Usuário não existe',
+        message: Messages.MESSAGE_USER_NOT_EXISTS,
       });
     }
 
@@ -38,6 +42,46 @@ class AuthenticateController {
       user: userEntity,
       token,
     };
+  }
+
+  async verifyToken() {
+    const token = '';
+    const secret = config.secret;
+
+    if (!secret) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Chave secret é vazia',
+      });
+    }
+
+    try {
+      const payload = jwt.verify(token, secret) as TokenPayload;
+
+      if (payload) {
+        const user = await prisma.user.findUnique({
+          where: { id: payload.id },
+        });
+
+        if (!user) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: Messages.MESSAGE_USER_NOT_EXISTS,
+          });
+        }
+
+        const userEntity = new UserEntity(user);
+
+        return { valid: true, user: userEntity };
+      }
+
+      return { valid: false, user: null };
+    } catch {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Houve algum problema ao tentar validar seu token',
+      });
+    }
   }
 }
 

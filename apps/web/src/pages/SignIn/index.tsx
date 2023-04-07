@@ -41,8 +41,6 @@ function SignIn() {
     authenticate.mutate(formattedData, {
       onSuccess(value) {
         setCookie('token', value.token, { path: '/' });
-
-        navigate('/tasks');
       },
       onError(value) {
         snackbarStore.setMessage(

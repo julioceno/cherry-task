@@ -26,7 +26,6 @@ const initialValues: CreateUserInput = {
 
 function SignUp() {
   const classes = useStyles();
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const authenticate = trpc.createUser.useMutation();
@@ -45,7 +44,6 @@ function SignUp() {
     authenticate.mutate(formattedData, {
       onSuccess(value) {
         setCookie('token', value.token);
-        navigate('/tasks');
       },
       onError(value) {
         snackbarStore.setMessage(value.message);
