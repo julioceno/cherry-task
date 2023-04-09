@@ -1,13 +1,12 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AppWrap } from '../components';
 import { menuItemsPrivateList, menuItemsPublic } from './menuItems';
 
-import { useCookies } from 'react-cookie';
+import { config } from '../config';
 
 function RoutesComponent() {
-  const [cookies] = useCookies(['token']);
-  const hasLogged = cookies.token;
-
+  // FIXME: mudar logica pra saber se esta logado
+  const hasLogged = localStorage.getItem(config.tokens.accessToken);
   const list = hasLogged ? menuItemsPrivateList : menuItemsPublic;
 
   return (

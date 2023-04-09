@@ -1,7 +1,7 @@
 const config = {
   appUrl: import.meta.env.VITE_API_BASEURL,
-  cookies: {
-    accessToken: '@cherryTask:token',
+  tokens: {
+    accessToken: '@cherryTask:accessToken',
     refreshToken: '@cherryTask:refreshToken',
   },
 };

@@ -29,8 +29,6 @@ export const TaskForm = observer(() => {
   const classes = useStyles();
   const [hasChange, setHasChange] = useState<Nullable<boolean>>(null);
 
-  const utils = trpc.useContext();
-
   const { id } = useParams<{ id: string }>();
 
   const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!);
@@ -63,7 +61,7 @@ export const TaskForm = observer(() => {
         },
         {
           async onSuccess(data) {
-            utils.privateRouter.tasksRouter.findOne.refetch();
+            /* utils.privateRouter.tasksRouter.findOne.refetch(); */
           },
           onError: () => {
             snackbarStore.setMessage('Houve um problema');

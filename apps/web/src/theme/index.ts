@@ -1,6 +1,4 @@
 import { createTheme } from '@mui/material/styles';
-import type {} from '@mui/x-date-pickers/themeAugmentation';
-import type {} from '@mui/x-date-pickers-pro/themeAugmentation';
 
 const theme = createTheme({
   palette: {

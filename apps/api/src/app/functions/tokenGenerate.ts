@@ -1,17 +1,11 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../../config';
 
-interface TokenGenerateProps {
-  id: string;
-  email: string;
-  password: string;
-}
-
-function tokenGenerate(params: TokenGenerateProps) {
+function tokenGenerate(userId: string) {
   const secret = config.secret;
 
-  const token = jwt.sign({ id: params.id }, secret, {
-    expiresIn: '10d',
+  const token = jwt.sign({ id: userId }, secret, {
+    expiresIn: '10s',
   });
 
   return token;

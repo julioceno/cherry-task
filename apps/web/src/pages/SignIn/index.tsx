@@ -1,7 +1,6 @@
 import { CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
   PasswordInput,
@@ -9,13 +8,12 @@ import {
   Spacer,
   TextInput,
 } from '../../components';
+import { config } from '../../config';
 import { snackbarStore } from '../../utils';
 import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { LoginInput } from './types';
 import { LoginSchema } from './validation';
-import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 
 const initialValues: LoginInput = {
   username: '',
@@ -25,8 +23,6 @@ const initialValues: LoginInput = {
 function SignIn() {
   const classes = useStyles();
   const theme = useTheme();
-  const navigate = useNavigate();
-  const [, setCookie] = useCookies(['token']);
 
   const authenticate = trpc.authenticate.useMutation();
 
@@ -40,12 +36,14 @@ function SignIn() {
 
     authenticate.mutate(formattedData, {
       onSuccess(value) {
-        setCookie('token', value.token, { path: '/' });
+        localStorage.setItem(config.tokens.accessToken, value.token);
+        localStorage.setItem(config.tokens.refreshToken, value.refreshToken);
+        window.location.href = '/';
       },
       onError(value) {
         snackbarStore.setMessage(
           value.message ??
-            'Não foi possível autenticar, verifique se suas credenciais estão corretas'
+            'Não foi possível autenticar, verifique se suas credenciais estão corretas.'
         );
       },
     });

@@ -1,9 +1,6 @@
 import { CircularProgress, Grid, Typography, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import {
   PasswordInput,
@@ -16,6 +13,7 @@ import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { CreateUserInput } from './types';
 import { CreateUserSchema } from './validation';
+import { config } from '../../config';
 
 const initialValues: CreateUserInput = {
   username: '',
@@ -29,7 +27,6 @@ function SignUp() {
   const theme = useTheme();
 
   const authenticate = trpc.createUser.useMutation();
-  const [, setCookie] = useCookies(['token']);
 
   function handleSubmit(values: CreateUserInput) {
     const { username, email, password, passwordConfirm } = values;
@@ -43,7 +40,9 @@ function SignUp() {
 
     authenticate.mutate(formattedData, {
       onSuccess(value) {
-        setCookie('token', value.token);
+        localStorage.setItem(config.tokens.accessToken, value.token);
+        localStorage.setItem(config.tokens.refreshToken, value.refreshToken);
+        window.location.href = '/';
       },
       onError(value) {
         snackbarStore.setMessage(value.message);

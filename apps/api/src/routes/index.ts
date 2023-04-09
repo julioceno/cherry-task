@@ -2,7 +2,11 @@ import { publicProcedure, router } from '../trpc';
 import { privateRouter } from './private.router';
 
 import { authenticateController, userController } from '../app/controllers/';
-import { authenticateSchema, createUserSchema } from '../app/schemas';
+import {
+  authenticateSchema,
+  createUserSchema,
+  refreshTokenSchema,
+} from '../app/schemas';
 
 const appRouter = router({
   ping: publicProcedure.query(() => 'pong!'),
@@ -15,6 +19,9 @@ const appRouter = router({
   verifyToken: publicProcedure.mutation(async () =>
     authenticateController.verifyToken()
   ),
+  refreshToken: publicProcedure
+    .input(refreshTokenSchema)
+    .mutation(({ input }) => authenticateController.refreshToken(input)),
   privateRouter,
 });
 

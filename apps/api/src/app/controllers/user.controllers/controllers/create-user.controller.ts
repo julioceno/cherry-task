@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { UserEntity } from '../../../entities';
 import { tokenGenerate } from '../../../functions';
 import { CreateUserInput } from '../../../schemas';
+import { generateRefreshToken } from '../../../provider/GenerateRefreshToken';
 
 const prisma = new PrismaClient();
 
@@ -16,12 +17,15 @@ class CreateUserController {
 
     const createdUser = await this.#createUser(body);
 
-    const token = tokenGenerate(createdUser);
+    const token = tokenGenerate(createdUser.id);
+    const refreshToken = (await generateRefreshToken.run(createdUser.id)).id;
+
     const userEntity = new UserEntity(createdUser);
 
     return {
       user: userEntity,
       token,
+      refreshToken,
     };
   }
 

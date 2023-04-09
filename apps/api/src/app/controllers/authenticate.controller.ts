@@ -8,8 +8,13 @@ import { config } from '../../config';
 import jwt from 'jsonwebtoken';
 import { TokenPayload } from '../middlewares';
 import { Messages } from '../utils';
+import { generateRefreshToken } from '../provider/GenerateRefreshToken';
+import { refreshTokenUserUseCase } from '../useCases/refreshTokenUserUseCase';
+import { RefreshTokenInput } from '../schemas/refreshToken';
 
 const prisma = new PrismaClient();
+
+// TODO: colcoar isso numa pasta paramanter o padrao
 
 class AuthenticateController {
   constructor() {}
@@ -35,12 +40,23 @@ class AuthenticateController {
       });
     }
 
-    const token = tokenGenerate(user);
+    await prisma.refreshToken.deleteMany({
+      where: { userId: user.id },
+    });
+
+    const token = tokenGenerate(user.id);
+    const refreshToken = (await generateRefreshToken.run(user.id)).id;
+
     const userEntity = new UserEntity(user);
 
+    console.log({
+      token,
+      refreshToken,
+    });
     return {
       user: userEntity,
       token,
+      refreshToken,
     };
   }
 
@@ -82,6 +98,12 @@ class AuthenticateController {
         message: 'Houve algum problema ao tentar validar seu token',
       });
     }
+  }
+
+  async refreshToken({ refreshToken }: RefreshTokenInput) {
+    const value = await refreshTokenUserUseCase.run(refreshToken);
+
+    return value;
   }
 }
 
