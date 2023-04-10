@@ -1,3 +1,3 @@
 export * from './messages';
-export * from './stories';
+export * from './stores';
 export * from './trpc';

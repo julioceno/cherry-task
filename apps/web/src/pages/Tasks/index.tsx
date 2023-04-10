@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import {
+  Box,
   Divider,
   Fab,
   Grid,
@@ -53,11 +54,13 @@ function Tasks() {
       </Grid>
       <Grid container item xs={12}>
         {tasks.data?.map((card) => (
-          <Card
-            id={card.id}
-            title={card.name || 'Sem título'}
-            description={card.description || 'Sem descrição'}
-          />
+          <Box key={card.id}>
+            <Card
+              id={card.id}
+              title={card.name || 'Sem título'}
+              description={card.description || 'Sem descrição'}
+            />
+          </Box>
         ))}
       </Grid>
       <Tooltip title='Criar nova tarefa' placement='top'>

@@ -13,7 +13,7 @@ interface Props {
   deleteStep: () => void;
   toggleCheckbox: () => void;
   handleOnChange: (value: string) => void;
-  handleOnKeyUp: (e: KeyboardEvent<HTMLInputElement>) => void;
+  handleOnKeyUp: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 function CheckboxDocument({
@@ -31,7 +31,7 @@ function CheckboxDocument({
     setHover(!hover);
   };
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     handleOnChangeCustomize(value);
   };

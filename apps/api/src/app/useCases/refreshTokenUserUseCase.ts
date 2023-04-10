@@ -36,7 +36,7 @@ class RefreshTokenUserUseCase {
         refreshToken.userId
       );
 
-      return { token, refreshToken: newRefreshToken };
+      return { token, refreshToken: newRefreshToken.id };
     }
 
     return { token };

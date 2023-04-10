@@ -68,7 +68,7 @@ class EventsStore {
     this.setSteps(tempSteps);
   }
 
-  handleOnKeyUp(indice: number, event: KeyboardEvent<HTMLInputElement>) {
+  handleOnKeyUp(indice: number, event: KeyboardEvent<HTMLTextAreaElement>) {
     if (event.key === KeysEnum.ENTER) {
       return this.createStep(indice);
     }

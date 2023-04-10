@@ -12,9 +12,7 @@ import { CookiesProvider } from 'react-cookie';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.Suspense>
-    <CookiesProvider>
-      <App />
-    </CookiesProvider>
+    <App />
   </React.Suspense>
 );
 

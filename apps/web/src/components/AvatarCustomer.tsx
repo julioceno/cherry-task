@@ -9,6 +9,7 @@ import {
   Popper,
 } from '@mui/material';
 import { useRef, useState } from 'react';
+import { config } from '../config';
 
 function AvatarCustomer({ username }: { username: string }) {
   const firstLetter = username[0];
@@ -17,6 +18,12 @@ function AvatarCustomer({ username }: { username: string }) {
 
   function toggleOpen() {
     setOpen((prev) => !prev);
+  }
+
+  function logout() {
+    localStorage.removeItem(config.tokens.accessToken);
+    localStorage.removeItem(config.tokens.refreshToken);
+    window.location.href = '/';
   }
 
   return (
@@ -47,7 +54,7 @@ function AvatarCustomer({ username }: { username: string }) {
             <Paper>
               <ClickAwayListener onClickAway={toggleOpen}>
                 <MenuList autoFocusItem={open}>
-                  <MenuItem onClick={() => undefined}>Sair</MenuItem>
+                  <MenuItem onClick={logout}>Sair</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

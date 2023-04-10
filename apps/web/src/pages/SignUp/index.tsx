@@ -8,7 +8,7 @@ import {
   Spacer,
   TextInput,
 } from '../../components';
-import { snackbarStore } from '../../utils';
+import { snackbarStore, userStore } from '../../utils';
 import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { CreateUserInput } from './types';
@@ -42,6 +42,7 @@ function SignUp() {
       onSuccess(value) {
         localStorage.setItem(config.tokens.accessToken, value.token);
         localStorage.setItem(config.tokens.refreshToken, value.refreshToken);
+        userStore.setUser(value.user);
         window.location.href = '/';
       },
       onError(value) {

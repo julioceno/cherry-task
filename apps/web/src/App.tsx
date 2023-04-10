@@ -9,28 +9,42 @@ import { tokenRefreshLink } from 'trpc-token-refresh-link';
 import { trpc } from './utils/trpc';
 
 import CssBaseline from '@mui/material/CssBaseline';
-import { observer } from 'mobx-react-lite';
 import { RoutesComponent } from './Routes';
 import { Snackbar } from './components/Snackbar';
 import { config } from './config';
-import { userStore } from './stores';
 import { theme } from './theme';
+import jwt_decode from 'jwt-decode';
+import { userStore } from './utils';
 
-const App = observer(() => {
+function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         tokenRefreshLink({
-          tokenRefreshNeeded: (query) => {
-            console.log(query);
-            if (!config.tokens.accessToken) {
+          tokenRefreshNeeded: () => {
+            try {
+              const accessToken = localStorage.getItem(
+                config.tokens.accessToken
+              );
+
+              if (!accessToken) {
+                return false;
+              }
+
+              const decodedToken = jwt_decode(accessToken) as { exp: number };
+
+              const expiresIn = decodedToken.exp - Date.now() / 1000;
+              if (expiresIn < 10) {
+                return true;
+              }
+
+              return false;
+            } catch (error) {
               return false;
             }
-
-            return true;
           },
-          fetchAccessToken: async (query) => {
+          fetchAccessToken: async () => {
             try {
               const response = await axios.post(
                 `${config.appUrl}/refreshToken`,
@@ -45,7 +59,13 @@ const App = observer(() => {
                 config.tokens.accessToken,
                 response.data.result.data.token
               );
-              // TODO: fazer o do refresh token
+
+              if (response.data.result.data.refreshToken) {
+                localStorage.setItem(
+                  config.tokens.refreshToken,
+                  response.data.result.data.refreshToken
+                );
+              }
             } catch (error) {
               if (error instanceof Error && error.message.includes('401')) {
                 localStorage.removeItem(config.tokens.accessToken);
@@ -58,7 +78,6 @@ const App = observer(() => {
         httpBatchLink({
           url: config.appUrl,
           headers() {
-            console.log('aaa', localStorage.getItem(config.tokens.accessToken));
             return {
               authorization: `Bearer ${localStorage.getItem(
                 config.tokens.accessToken
@@ -83,6 +102,6 @@ const App = observer(() => {
       </QueryClientProvider>
     </trpc.Provider>
   );
-});
+}
 
 export default App;

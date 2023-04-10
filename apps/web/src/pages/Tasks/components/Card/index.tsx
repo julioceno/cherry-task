@@ -39,7 +39,16 @@ function Card({ id, title, description }: CardProps) {
       component='span'
       onClick={() => handleNavigation(`/task/${id}`)}
     >
-      <Typography variant='h5' fontWeight='600'>
+      <Typography
+        variant='h5'
+        fontWeight='600'
+        style={{
+          display: '-webkit-box', // TODO: tirar isso do jsx
+          overflow: 'hidden',
+          WebkitLineClamp: Math.round(width / (height - (width - 3) / 2)),
+          WebkitBoxOrient: 'vertical',
+        }}
+      >
         {title}
       </Typography>
       <Spacer y={3} />

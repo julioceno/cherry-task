@@ -1,11 +1,4 @@
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Grid,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Divider, Grid, useTheme } from '@mui/material';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +6,6 @@ import { useBeforeunload } from 'react-beforeunload';
 import { useParams } from 'react-router-dom';
 import {
   CheckboxDocument,
-  HandleErrorPage,
   Spacer,
   TextFieldDocument,
   handleStateErrorsToRender,
@@ -32,6 +24,7 @@ export const TaskForm = observer(() => {
   const { id } = useParams<{ id: string }>();
 
   const task = trpc.privateRouter.tasksRouter.findOne.useQuery(id!);
+  const utils = trpc.useContext();
 
   const updateTask = trpc.privateRouter.tasksRouter.update.useMutation();
   const formik = useFormik({
@@ -61,7 +54,7 @@ export const TaskForm = observer(() => {
         },
         {
           async onSuccess(data) {
-            /* utils.privateRouter.tasksRouter.findOne.refetch(); */
+            utils.privateRouter.tasksRouter.findOne.refetch();
           },
           onError: () => {
             snackbarStore.setMessage('Houve um problema');
@@ -75,7 +68,7 @@ export const TaskForm = observer(() => {
 
   timer.setExecute(() => formik.handleSubmit());
 
-  function handleChangeField(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeField(e: React.ChangeEvent<HTMLTextAreaElement>) {
     handleChangeForm();
     formik.handleChange(e);
   }
@@ -123,8 +116,9 @@ export const TaskForm = observer(() => {
           onChange={handleChangeField}
           onBlur={formik.handleBlur}
           styles={{
-            fontSize: theme.spacing(12),
             fontWeight: 'bold',
+            fontSize: theme.spacing(12),
+            lineHeight: theme.spacing(9),
           }}
         />
         <Grid item>
