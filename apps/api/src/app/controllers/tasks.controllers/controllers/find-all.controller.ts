@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { prismaClient } from '../../../../Prisma/client';
 import { TaskEntity } from '../../../entities';
-
-const prisma = new PrismaClient();
 
 class FindAllController {
   async run(userId: string) {
-    const tasks = await prisma.task.findMany({
+    const tasks = await prismaClient.task.findMany({
       where: {
         userId,
       },

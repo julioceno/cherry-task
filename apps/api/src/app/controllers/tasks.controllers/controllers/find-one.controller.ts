@@ -2,12 +2,11 @@ import { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { TaskEntity } from '../../../entities';
 import { Messages } from '../../../utils/messages/messages';
-
-const prisma = new PrismaClient();
+import { prismaClient } from '../../../../Prisma/client';
 
 export class FindOneController {
   async run(id: string, userId: string) {
-    const task = await prisma.task.findFirst({
+    const task = await prismaClient.task.findFirst({
       where: { id, userId },
       include: { steps: true },
     });

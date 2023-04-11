@@ -11,14 +11,13 @@ import { generateRefreshToken } from '../../provider/GenerateRefreshToken';
 import { AuthenticateInput } from '../../schemas';
 import { RefreshTokenInput } from '../../schemas/refreshToken';
 import { Messages } from '../../utils';
-
-const prisma = new PrismaClient();
+import { prismaClient } from '../../../Prisma/client';
 
 class AuthenticateController {
   constructor() {}
 
   async authenticate({ username, password }: AuthenticateInput) {
-    const user = await prisma.user.findUnique({
+    const user = await prismaClient.user.findUnique({
       where: { username },
     });
 
@@ -65,7 +64,7 @@ class AuthenticateController {
       const payload = jwt.verify(token, secret) as TokenPayload;
 
       if (payload) {
-        const user = await prisma.user.findUnique({
+        const user = await prismaClient.user.findUnique({
           where: { id: payload.id },
         });
 
@@ -91,7 +90,7 @@ class AuthenticateController {
   }
 
   async refreshToken({ refreshToken: refreshTokenId }: RefreshTokenInput) {
-    const refreshToken = await prisma.refreshToken.findUnique({
+    const refreshToken = await prismaClient.refreshToken.findUnique({
       where: {
         id: refreshTokenId,
       },

@@ -3,14 +3,13 @@ import { TaskEntity } from '../../../entities';
 import { UpdateTaskInput } from '../../../schemas';
 import { Messages } from '../../../utils';
 import { TRPCError } from '@trpc/server';
-
-const prisma = new PrismaClient();
+import { prismaClient } from '../../../../Prisma/client';
 
 class UpdateController {
   async run(userId: string, body: UpdateTaskInput) {
     await this.#verifycations(userId, body.id);
 
-    const updatedTask = await prisma.task.update({
+    const updatedTask = await prismaClient.task.update({
       where: { id: body.id },
       data: this.#buildData(body),
       include: { steps: true },
@@ -20,7 +19,7 @@ class UpdateController {
   }
 
   async #verifycations(id: string, taskId: string) {
-    const task = await prisma.task.findUnique({
+    const task = await prismaClient.task.findUnique({
       where: {
         id: taskId,
       },

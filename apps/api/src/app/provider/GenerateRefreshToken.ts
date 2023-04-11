@@ -1,17 +1,15 @@
-import { PrismaClient } from '@prisma/client';
 import dayjs from 'dayjs';
-
-const prisma = new PrismaClient();
+import { prismaClient } from '../../Prisma/client';
 
 class GenerateRefreshToken {
   async run(userId: string) {
-    await prisma.refreshToken.deleteMany({
+    await prismaClient.refreshToken.deleteMany({
       where: { userId },
     });
 
     const expiresIn = dayjs().add(30, 'minute').unix();
 
-    const generateRefreshToken = await prisma.refreshToken.create({
+    const generateRefreshToken = await prismaClient.refreshToken.create({
       data: {
         userId,
         expiresIn,

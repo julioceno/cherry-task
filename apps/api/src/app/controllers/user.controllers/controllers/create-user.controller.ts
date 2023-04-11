@@ -5,8 +5,7 @@ import { UserEntity } from '../../../entities';
 import { tokenGenerate } from '../../../functions';
 import { CreateUserInput } from '../../../schemas';
 import { generateRefreshToken } from '../../../provider/GenerateRefreshToken';
-
-const prisma = new PrismaClient();
+import { prismaClient } from '../../../../Prisma/client';
 
 class CreateUserController {
   async run(body: CreateUserInput) {
@@ -30,7 +29,7 @@ class CreateUserController {
   }
 
   async #verifyUserAlreadyExists(username: string, email: string) {
-    const userAlreadyExists = await prisma.user.findUnique({
+    const userAlreadyExists = await prismaClient.user.findUnique({
       where: { username },
     });
 
@@ -41,7 +40,7 @@ class CreateUserController {
       });
     }
 
-    const emailAlreadyUsed = await prisma.user.findUnique({
+    const emailAlreadyUsed = await prismaClient.user.findUnique({
       where: { email },
     });
 
@@ -65,7 +64,7 @@ class CreateUserController {
   #createUser({ username, email, password }: CreateUserInput) {
     const passwordEncrypted = bcrypt.hashSync(password, 8);
 
-    return prisma.user.create({
+    return prismaClient.user.create({
       data: {
         username,
         email,
