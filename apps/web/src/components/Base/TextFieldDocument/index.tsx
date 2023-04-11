@@ -2,16 +2,6 @@ import { TextareaAutosize, useTheme } from '@mui/material';
 import { CSSProperties } from 'react';
 import { TextareaAutosizeProps } from 'react-textarea-autosize';
 
-/* export interface TextFieldDocumentProps
-  extends React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  name: string;
-  label?: string;
-  styles?: CSSProperties;
-} */
-
 export interface TextFieldDocumentProps extends TextareaAutosizeProps {
   name: string;
   label?: string;
@@ -45,7 +35,7 @@ function TextFieldDocument({
       id={name}
       name={name}
       style={styles}
-      cacheMeasurements={false}
+      cacheMeasurements
       {...rest}
     />
   );

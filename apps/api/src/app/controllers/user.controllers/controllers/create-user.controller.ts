@@ -18,7 +18,7 @@ class CreateUserController {
     const createdUser = await this.#createUser(body);
 
     const token = tokenGenerate(createdUser.id);
-    const refreshToken = (await generateRefreshToken.run(createdUser.id)).id;
+    const refreshToken = await generateRefreshToken.run(createdUser.id);
 
     const userEntity = new UserEntity(createdUser);
 

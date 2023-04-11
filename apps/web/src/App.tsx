@@ -35,7 +35,7 @@ function App() {
               const decodedToken = jwt_decode(accessToken) as { exp: number };
 
               const expiresIn = decodedToken.exp - Date.now() / 1000;
-              if (expiresIn < 10) {
+              if (expiresIn < 1) {
                 return true;
               }
 

@@ -1,20 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import bcrypt from 'bcrypt';
-import { UserEntity } from '../entities';
-import { tokenGenerate } from '../functions';
-import { AuthenticateInput } from '../schemas';
-import { config } from '../../config';
+import dayjs from 'dayjs';
 import jwt from 'jsonwebtoken';
-import { TokenPayload } from '../middlewares';
-import { Messages } from '../utils';
-import { generateRefreshToken } from '../provider/GenerateRefreshToken';
-import { refreshTokenUserUseCase } from '../useCases/refreshTokenUserUseCase';
-import { RefreshTokenInput } from '../schemas/refreshToken';
+import { config } from '../../../config';
+import { UserEntity } from '../../entities';
+import { tokenGenerate } from '../../functions';
+import { TokenPayload } from '../../middlewares';
+import { generateRefreshToken } from '../../provider/GenerateRefreshToken';
+import { AuthenticateInput } from '../../schemas';
+import { RefreshTokenInput } from '../../schemas/refreshToken';
+import { Messages } from '../../utils';
 
 const prisma = new PrismaClient();
-
-// TODO: colcoar isso numa pasta paramanter o padrao
 
 class AuthenticateController {
   constructor() {}
@@ -40,19 +38,11 @@ class AuthenticateController {
       });
     }
 
-    await prisma.refreshToken.deleteMany({
-      where: { userId: user.id },
-    });
-
     const token = tokenGenerate(user.id);
-    const refreshToken = (await generateRefreshToken.run(user.id)).id;
+    const refreshToken = await generateRefreshToken.run(user.id);
 
     const userEntity = new UserEntity(user);
 
-    console.log({
-      token,
-      refreshToken,
-    });
     return {
       user: userEntity,
       token,
@@ -100,10 +90,35 @@ class AuthenticateController {
     }
   }
 
-  async refreshToken({ refreshToken }: RefreshTokenInput) {
-    const value = await refreshTokenUserUseCase.run(refreshToken);
+  async refreshToken({ refreshToken: refreshTokenId }: RefreshTokenInput) {
+    const refreshToken = await prisma.refreshToken.findUnique({
+      where: {
+        id: refreshTokenId,
+      },
+    });
 
-    return value;
+    if (!refreshToken) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'Refresh token invalid',
+      });
+    }
+
+    const refreshTokenExpired = dayjs().isAfter(
+      dayjs.unix(refreshToken.expiresIn)
+    );
+
+    const token = tokenGenerate(refreshToken.userId);
+
+    if (refreshTokenExpired) {
+      const newRefreshToken = await generateRefreshToken.run(
+        refreshToken.userId
+      );
+
+      return { token, refreshToken: newRefreshToken };
+    }
+
+    return { token };
   }
 }
 
