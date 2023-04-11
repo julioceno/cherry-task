@@ -14,8 +14,6 @@ import { Messages } from '../../utils';
 import { prismaClient } from '../../../Prisma/client';
 
 class AuthenticateController {
-  constructor() {}
-
   async authenticate({ username, password }: AuthenticateInput) {
     const user = await prismaClient.user.findUnique({
       where: { username },
