@@ -77,11 +77,17 @@ function App() {
         httpBatchLink({
           url: config.appUrl,
           headers() {
-            return {
-              authorization: `Bearer ${localStorage.getItem(
-                config.tokens.accessToken
-              )}`,
-            };
+            const accessToken = config.tokens.accessToken;
+
+            if (accessToken) {
+              return {
+                authorization: `Bearer ${localStorage.getItem(
+                  config.tokens.accessToken
+                )}`,
+              };
+            }
+
+            return {};
           },
         }),
       ],

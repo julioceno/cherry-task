@@ -57,7 +57,7 @@ export const TaskForm = observer(() => {
             utils.privateRouter.tasksRouter.findOne.refetch();
           },
           onError: () => {
-            snackbarStore.setMessage('Houve um problema');
+            snackbarStore.setMessage('Houve um problema.');
           },
         }
       );

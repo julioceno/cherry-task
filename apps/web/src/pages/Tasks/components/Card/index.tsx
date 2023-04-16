@@ -5,6 +5,7 @@ import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 import { useState } from 'react';
 import ClearIcon from '@mui/icons-material/Clear';
 import { snackbarStore, trpc } from '../../../../utils';
+import { userStore } from '../../../../utils/stores/userStore';
 
 export interface CardProps {
   id: string;
@@ -41,7 +42,7 @@ function Card({ id, title, description }: CardProps) {
       onSuccess() {
         utils.privateRouter.tasksRouter.findAll.refetch();
       },
-      onError(err) {
+      onError() {
         snackbarStore.setMessage('Ocorreu um erro ao tentar deletar a tarefa.');
       },
     });

@@ -19,7 +19,7 @@ const AppWrap = ({ children, label, publicRouter, unlisted }: AppWrapProps) => {
     <Fragment>{children}</Fragment>
   ) : (
     <Box
-      sx={{
+      style={{
         display: 'flex',
         height: '100%',
         alignItems: 'start',
