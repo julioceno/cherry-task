@@ -37,10 +37,9 @@ function Card({ id, title, description }: CardProps) {
   };
 
   const handleDelete = (id: string) => {
-    deleteTask.mutateAsync(id, {
+    deleteTask.mutate(id, {
       onSuccess() {
-        console.log('deu bom');
-        /* utils.privateRouter.tasksRouter.findAll.refetch(); */
+        utils.privateRouter.tasksRouter.findAll.refetch();
       },
       onError(err) {
         snackbarStore.setMessage('Ocorreu um erro ao tentar deletar a tarefa.');
@@ -58,15 +57,15 @@ function Card({ id, title, description }: CardProps) {
         color: theme.palette.secondary.main,
         display: 'flex',
         flexDirection: 'column',
-        '&:hover': {
-          background: theme.palette.primary.main,
-          cursor: 'pointer',
-        },
         height: theme.spacing(height),
         width: theme.spacing(width),
         padding: 2,
         margin: 2,
         borderRadius: theme.spacing(width / width),
+        '&:hover': {
+          background: theme.palette.primary.main,
+          cursor: 'pointer',
+        },
       }}
       component='span'
       onClick={() => handleNavigation(`/task/${id}`)}

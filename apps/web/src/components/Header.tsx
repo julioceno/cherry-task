@@ -2,10 +2,9 @@ import { AppBar, Grid, Toolbar, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { observer } from 'mobx-react-lite';
 import { AvatarCustomer } from './AvatarCustomer';
-import { userStore } from '../utils';
 
-const Header = observer(() => {
-  const username = userStore.user?.username ?? 'flex-end';
+const Header = () => {
+  const username = 'julin';
 
   return (
     <AppBar
@@ -29,6 +28,6 @@ const Header = observer(() => {
       </Toolbar>
     </AppBar>
   );
-});
+};
 
 export { Header };

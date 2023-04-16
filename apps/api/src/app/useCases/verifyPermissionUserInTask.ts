@@ -4,8 +4,6 @@ import { Messages } from '../utils';
 
 class VerifyPermissionUserInTask {
   async run(userId: string, taskId: string) {
-    console.log({ userId, taskId });
-
     const task = await prismaClient.task.findUnique({
       where: { id: taskId },
       select: { userId: true },

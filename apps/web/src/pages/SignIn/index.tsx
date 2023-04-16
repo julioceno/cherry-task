@@ -9,7 +9,7 @@ import {
   TextInput,
 } from '../../components';
 import { config } from '../../config';
-import { snackbarStore, userStore } from '../../utils';
+import { snackbarStore } from '../../utils';
 import { trpc } from '../../utils/trpc';
 import { useStyles } from './styles';
 import { LoginInput } from './types';
@@ -38,7 +38,6 @@ function SignIn() {
       onSuccess(value) {
         localStorage.setItem(config.tokens.accessToken, value.token);
         localStorage.setItem(config.tokens.refreshToken, value.refreshToken);
-        userStore.setUser(value.user);
         window.location.href = '/';
       },
       onError(value) {

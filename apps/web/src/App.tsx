@@ -14,7 +14,6 @@ import { Snackbar } from './components/Snackbar';
 import { config } from './config';
 import { theme } from './theme';
 import jwt_decode from 'jwt-decode';
-import { userStore } from './utils';
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
