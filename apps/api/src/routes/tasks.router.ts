@@ -14,12 +14,17 @@ const tasksRouter = router({
   findOne: protectedProcedure
     .input(z.string())
     .query(({ input, ctx: { userId } }) =>
-      tasksController.findOne(input, userId)
+      tasksController.findOne(userId, input)
     ),
   update: protectedProcedure
     .input(updateTaskSchema)
     .mutation(({ input, ctx: { userId } }) =>
       tasksController.update(userId, input)
+    ),
+  delete: protectedProcedure
+    .input(z.string())
+    .mutation(({ input, ctx: { userId } }) =>
+      tasksController.delete(userId, input)
     ),
 });
 

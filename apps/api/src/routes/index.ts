@@ -16,12 +16,12 @@ const appRouter = router({
   authenticate: publicProcedure
     .input(authenticateSchema)
     .mutation(async ({ input }) => authenticateController.authenticate(input)),
-  verifyToken: publicProcedure.mutation(async () =>
-    authenticateController.verifyToken()
-  ),
   refreshToken: publicProcedure
     .input(refreshTokenSchema)
     .mutation(({ input }) => authenticateController.refreshToken(input)),
+  logout: publicProcedure
+    .input(refreshTokenSchema)
+    .mutation(({ input }) => authenticateController.logout(input)),
   privateRouter,
 });
 

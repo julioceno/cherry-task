@@ -10,20 +10,40 @@ import {
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import { config } from '../config';
+import { snackbarStore, trpc } from '../utils';
 
 function AvatarCustomer({ username }: { username: string }) {
   const firstLetter = username[0];
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
 
+  const logout = trpc.logout.useMutation();
+
   function toggleOpen() {
     setOpen((prev) => !prev);
   }
 
-  function logout() {
-    localStorage.removeItem(config.tokens.accessToken);
-    localStorage.removeItem(config.tokens.refreshToken);
-    window.location.href = '/';
+  function handleLogout() {
+    const refreshToken = localStorage.getItem(config.tokens.refreshToken);
+
+    if (!refreshToken) {
+      snackbarStore.setMessage('Houve um problema ao tentar sair.');
+      return;
+    }
+
+    logout.mutate(
+      { refreshToken },
+      {
+        onSuccess() {
+          localStorage.removeItem(config.tokens.accessToken);
+          localStorage.removeItem(config.tokens.refreshToken);
+          window.location.href = '/';
+        },
+        onError() {
+          snackbarStore.setMessage('Houve um problema ao tentar sair.');
+        },
+      }
+    );
   }
 
   return (
@@ -54,7 +74,7 @@ function AvatarCustomer({ username }: { username: string }) {
             <Paper>
               <ClickAwayListener onClickAway={toggleOpen}>
                 <MenuList autoFocusItem={open}>
-                  <MenuItem onClick={logout}>Sair</MenuItem>
+                  <MenuItem onClick={handleLogout}>Sair</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

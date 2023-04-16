@@ -12,6 +12,7 @@ import { AuthenticateInput } from '../../schemas';
 import { RefreshTokenInput } from '../../schemas/refreshToken';
 import { Messages } from '../../utils';
 import { prismaClient } from '../../../Prisma/client';
+import { logoutController } from './controllers';
 
 class AuthenticateController {
   async authenticate({ username, password }: AuthenticateInput) {
@@ -47,46 +48,6 @@ class AuthenticateController {
     };
   }
 
-  async verifyToken() {
-    const token = '';
-    const secret = config.secret;
-
-    if (!secret) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'Chave secret é vazia',
-      });
-    }
-
-    try {
-      const payload = jwt.verify(token, secret) as TokenPayload;
-
-      if (payload) {
-        const user = await prismaClient.user.findUnique({
-          where: { id: payload.id },
-        });
-
-        if (!user) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: Messages.MESSAGE_USER_NOT_EXISTS,
-          });
-        }
-
-        const userEntity = new UserEntity(user);
-
-        return { valid: true, user: userEntity };
-      }
-
-      return { valid: false, user: null };
-    } catch {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: 'Houve algum problema ao tentar validar seu token',
-      });
-    }
-  }
-
   async refreshToken({ refreshToken: refreshTokenId }: RefreshTokenInput) {
     const refreshToken = await prismaClient.refreshToken.findUnique({
       where: {
@@ -97,7 +58,7 @@ class AuthenticateController {
     if (!refreshToken) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: 'Refresh token invalid',
+        message: 'Refresh token invalid.',
       });
     }
 
@@ -116,6 +77,10 @@ class AuthenticateController {
     }
 
     return { token };
+  }
+
+  logout(body: RefreshTokenInput) {
+    return logoutController.run(body);
   }
 }
 

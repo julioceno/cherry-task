@@ -103,6 +103,12 @@ export const TaskForm = observer(() => {
     eventsStore.handleOnFocusInLastCreated();
   }, [eventsStore.steps]);
 
+  /*   useEffect(() => {
+    return () => {
+      timer.setReset();
+    };
+  }, []); */
+
   return (
     <Grid container className={classes.container} spacing={2}>
       <Grid item>

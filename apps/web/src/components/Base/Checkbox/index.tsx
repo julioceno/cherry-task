@@ -81,9 +81,6 @@ function CheckboxDocument({
         }}
         onKeyUp={handleOnKeyUpCustomize}
         onChange={handleOnChange}
-        ref={(input) => {
-          input && input.focus();
-        }}
       />
     </Box>
   );
