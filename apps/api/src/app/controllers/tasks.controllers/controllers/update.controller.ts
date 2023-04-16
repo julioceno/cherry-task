@@ -28,7 +28,7 @@ class UpdateController {
     if (!task) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: Messages.MESSAGE_TASK_NOTFOUND,
+        message: Messages.MESSAGE_NOT_FOUND,
       });
     }
 

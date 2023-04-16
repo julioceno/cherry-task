@@ -1,9 +1,13 @@
 import { CreateUserInput } from '../../schemas';
-import { createUserController } from './controllers';
+import { createUserController, findOneController } from './controllers';
 
 class UserController {
   create(body: CreateUserInput) {
     return createUserController.run(body);
+  }
+
+  findOne(id: string) {
+    return findOneController.run(id);
   }
 }
 

@@ -36,7 +36,7 @@ class CreateUserController {
     if (userAlreadyExists) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Usuário ja existe',
+        message: 'Usuário ja existe.',
       });
     }
 
@@ -47,7 +47,7 @@ class CreateUserController {
     if (emailAlreadyUsed) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'Email já está sendo utilizado',
+        message: 'Email já está sendo utilizado.',
       });
     }
   }
@@ -56,7 +56,7 @@ class CreateUserController {
     if (password !== passwordConfirm) {
       throw new TRPCError({
         code: 'BAD_REQUEST',
-        message: 'As senhas não são iguais',
+        message: 'As senhas não são iguais.',
       });
     }
   }
@@ -75,5 +75,4 @@ class CreateUserController {
 }
 
 const createUserController = new CreateUserController();
-
 export { createUserController };
