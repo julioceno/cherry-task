@@ -5,6 +5,8 @@ import { userStore } from '../utils/stores/userStore';
 import { observer } from 'mobx-react-lite';
 
 const Header = observer(() => {
+  const username = userStore.user?.username ?? '';
+
   return (
     <AppBar
       position='absolute'
@@ -16,11 +18,11 @@ const Header = observer(() => {
           <Grid container justifyContent='flex-end' alignItems='center'>
             <Grid item>
               <Typography>
-                <strong>{userStore.username}</strong>
+                <strong>{username}</strong>
               </Typography>
             </Grid>
             <Grid item>
-              <AvatarCustomer username={userStore.username ?? ''} />
+              <AvatarCustomer username={username} />
             </Grid>
           </Grid>
         </Box>

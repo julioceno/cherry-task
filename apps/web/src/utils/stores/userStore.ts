@@ -1,21 +1,21 @@
 import { autorun, makeAutoObservable } from 'mobx';
+import { User } from '../../pages/SignIn/types';
 
 class UserStore {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  username: Nullable<string> = null;
+  user: Nullable<User> = null;
+  setUser(user: User) {
+    this.user = user;
+  }
 
-  setUsername(username: any) {
-    this.username = username;
+  resetUser() {
+    this.user = null;
   }
 }
 
 const userStore = new UserStore();
-
-autorun(() => {
-  console.log('username: ', userStore.username);
-});
 
 export { userStore };

@@ -1,19 +1,17 @@
+import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { tokenRefreshLink } from 'trpc-token-refresh-link';
-import { trpc } from './utils/trpc';
-
-import CssBaseline from '@mui/material/CssBaseline';
 import { RoutesComponent } from './Routes';
 import { Snackbar } from './components/Snackbar';
 import { config } from './config';
 import { theme } from './theme';
-import jwt_decode from 'jwt-decode';
+import { getUserLink, trpc } from './utils';
+import { AxiosTrpcResponse, axiosIntance } from './utils/axios';
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -45,14 +43,11 @@ function App() {
           },
           fetchAccessToken: async () => {
             try {
-              const response = await axios.post(
-                `${config.appUrl}/refreshToken`,
-                {
-                  refreshToken: localStorage.getItem(
-                    config.tokens.refreshToken
-                  ),
-                }
-              );
+              const response = await axiosIntance.post<
+                AxiosTrpcResponse<{ token: string; refreshToken?: string }>
+              >('refreshToken', {
+                refreshToken: localStorage.getItem(config.tokens.refreshToken),
+              });
 
               localStorage.setItem(
                 config.tokens.accessToken,
@@ -74,6 +69,7 @@ function App() {
             }
           },
         }),
+        getUserLink,
         httpBatchLink({
           url: config.appUrl,
           headers() {
@@ -97,13 +93,11 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <DndProvider backend={HTML5Backend}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <RoutesComponent />
-            <Snackbar />
-          </ThemeProvider>
-        </DndProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <RoutesComponent />
+          <Snackbar />
+        </ThemeProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );
