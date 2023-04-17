@@ -10,7 +10,7 @@ export function handleStateErrorsToRender<T>(
   if (state.status === 'error') {
     return (
       <HandleErrorPage
-        status={state.error.data.httpStatus}
+        status={state.error.data?.httpStatus}
         error={state.error.message}
       />
     );

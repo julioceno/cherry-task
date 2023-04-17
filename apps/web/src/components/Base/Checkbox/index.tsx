@@ -9,20 +9,20 @@ import { TextFieldDocument } from '../TextFieldDocument';
 
 interface Props {
   task: IStep;
-  createStep: () => void;
   deleteStep: () => void;
   toggleCheckbox: () => void;
   handleOnChange: (value: string) => void;
   handleOnKeyUp: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
+  handleOnKeyPress: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 function CheckboxDocument({
-  createStep,
   deleteStep,
   toggleCheckbox,
   task,
   handleOnChange: handleOnChangeCustomize,
   handleOnKeyUp: handleOnKeyUpCustomize,
+  handleOnKeyPress: handleOnKeyPressCustomize,
 }: Props) {
   const theme = useTheme();
   const [hover, setHover] = useState(false);
@@ -80,6 +80,7 @@ function CheckboxDocument({
           ...(task.checked && { color: grey[400] }),
         }}
         onKeyUp={handleOnKeyUpCustomize}
+        onKeyPress={handleOnKeyPressCustomize}
         onChange={handleOnChange}
       />
     </Box>

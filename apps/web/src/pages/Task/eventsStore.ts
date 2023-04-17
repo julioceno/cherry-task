@@ -69,12 +69,19 @@ class EventsStore {
   }
 
   handleOnKeyUp(indice: number, event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === KeysEnum.ENTER) {
+    if (!event.shiftKey && event.key === KeysEnum.ENTER) {
+      event.preventDefault();
       return this.createStep(indice);
     }
 
     if (event.key === KeysEnum.BACKSPACE) {
       this.#onKeyBackspace(indice);
+    }
+  }
+
+  handleOnKeyPress(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (!event.shiftKey && event.key === KeysEnum.ENTER) {
+      event.preventDefault();
     }
   }
 

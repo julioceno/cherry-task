@@ -53,7 +53,7 @@ export const TaskForm = observer(() => {
           }),
         },
         {
-          async onSuccess(data) {
+          onSuccess() {
             utils.privateRouter.tasksRouter.findOne.refetch();
           },
           onError: () => {
@@ -103,11 +103,11 @@ export const TaskForm = observer(() => {
     eventsStore.handleOnFocusInLastCreated();
   }, [eventsStore.steps]);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     return () => {
       timer.setReset();
     };
-  }, []); */
+  }, []);
 
   return (
     <Grid container className={classes.container} spacing={2}>
@@ -156,10 +156,6 @@ export const TaskForm = observer(() => {
           <Grid item xs={12} key={index}>
             <CheckboxDocument
               task={item}
-              createStep={() => {
-                handleChangeForm();
-                eventsStore.createStep(item.indice);
-              }}
               deleteStep={() => {
                 handleChangeForm();
                 eventsStore.deleteStep(item.indice);
@@ -169,13 +165,13 @@ export const TaskForm = observer(() => {
                 eventsStore.toggleCheckbox(item.indice);
               }}
               handleOnChange={(value) => {
-                handleChangeForm();
                 eventsStore.handleOnChange(item.indice, value);
               }}
               handleOnKeyUp={(event) => {
                 handleChangeForm();
                 eventsStore.handleOnKeyUp(item.indice, event);
               }}
+              handleOnKeyPress={eventsStore.handleOnKeyPress}
             />
           </Grid>
         ))}
