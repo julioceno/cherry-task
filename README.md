@@ -2,7 +2,7 @@
 
 ##### _Organize suas cerejas do dia a dia_
 
-O cherry task é uma aplicação com a primicia de ajudar o seu usuário a se organizar com suas tarefas do dia a dia
+O cherry task é uma aplicação com a premissa de ajudar o seu usuário a se organizar com suas tarefas do dia a dia
 
 ![Apresentação](./.github/sigin-screen.png)
 
