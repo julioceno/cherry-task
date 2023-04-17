@@ -106,6 +106,7 @@ export const TaskForm = observer(() => {
   useEffect(() => {
     return () => {
       timer.setReset();
+      eventsStore.clear();
     };
   }, []);
 

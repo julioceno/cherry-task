@@ -1,4 +1,4 @@
-import { makeAutoObservable, autorun } from 'mobx';
+import { makeAutoObservable, autorun, toJS } from 'mobx';
 import { KeyboardEvent } from 'react';
 import { KeysEnum } from '../../enums';
 import { IStep } from './types';
@@ -8,7 +8,15 @@ class EventsStore {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
-  steps: IStep[] = [this.createStepItem()];
+  steps: IStep[] = [
+    {
+      indice: 1,
+      label: null,
+      checked: false,
+      focus: true,
+    },
+  ];
+
   setSteps(steps: IStep[]) {
     this.steps = steps;
   }
@@ -31,7 +39,7 @@ class EventsStore {
 
   createStepItem(): IStep {
     return {
-      indice: this.steps?.length ? this.steps.length + 1 : 1,
+      indice: this.steps.length + 1,
       label: null,
       checked: false,
       focus: true,
@@ -132,7 +140,7 @@ class EventsStore {
   }
 
   clear() {
-    this.steps = [this.createStepItem()];
+    this.steps = [];
     this.indiceLastCreated = null;
   }
 }
