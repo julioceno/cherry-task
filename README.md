@@ -10,12 +10,12 @@ _"A verdadeira organização começa dentro de você!"_
 
 ## Tecnologias
 
-Aqui vai as tecnologias utilizadas para construir esta aplicação
+Aqui vai as principais tecnologias utilizadas para construir esta aplicação
 
 - [React](https://react.dev/)
 - [TRPC](https://trpc.io/)
 - [Turbo repo](https://turbo.build/)
-- [node.js](https://nodejs.org/en)
+- [Node.js](https://nodejs.org/en)
 
 ## Rode o projeto
 
