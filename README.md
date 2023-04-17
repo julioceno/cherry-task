@@ -5,7 +5,7 @@
 O cherry task é uma aplicação com a primicia de ajudar o seu usuário a se organizar com suas tarefas do dia a dia.
 
 //aqui vai ter um video da aplicação
-![Apresentação](./.github/nome-do-arquivo.gif)
+![Apresentação](./.github/presentation.gif)
 
 _"A verdadeira organização começa dentro de você!"_
 
