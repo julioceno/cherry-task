@@ -41,7 +41,7 @@ yarn
 
 3. Ajuste as variáveis de ambiente, olhe os arquivos `.env.example`, tanto no frontend quanto no backend
 
-4. suba o container docker
+4. Suba o container docker
 
 ```sh
 yarn workspace api docker-compose -f docker/docker-compose.yml up -d
