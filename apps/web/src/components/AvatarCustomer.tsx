@@ -31,19 +31,32 @@ function AvatarCustomer({ username }: { username: string }) {
       return;
     }
 
+    function logoutActions() {
+      localStorage.removeItem(config.tokens.accessToken);
+      localStorage.removeItem(config.tokens.refreshToken);
+      window.location.href = '/';
+    }
+
     logout.mutate(
       { refreshToken },
       {
         onSuccess() {
-          localStorage.removeItem(config.tokens.accessToken);
-          localStorage.removeItem(config.tokens.refreshToken);
-          window.location.href = '/';
+          logoutActions();
         },
         onError() {
-          snackbarStore.setMessage('Houve um problema ao tentar sair.');
+          snackbarStore.setMessage(
+            'Houve um problema ao sair, estamos te redirecionando para a tela de login.'
+          );
+
+          setTimeout(() => {
+            logoutActions();
+          }, 500);
         },
       }
     );
+
+    localStorage.removeItem(config.tokens.accessToken);
+    localStorage.removeItem(config.tokens.refreshToken);
   }
 
   return (

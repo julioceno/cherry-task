@@ -59,7 +59,7 @@ model RefreshToken {
   expiresIn Int    @map("expires_in")
   userId    String @unique @map("user_id")
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
