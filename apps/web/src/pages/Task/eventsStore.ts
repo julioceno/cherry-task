@@ -1,4 +1,4 @@
-import { makeAutoObservable, autorun, toJS } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { KeyboardEvent } from 'react';
 import { KeysEnum } from '../../enums';
 import { IStep } from './types';
