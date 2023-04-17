@@ -1,7 +1,7 @@
 version: '3'
 services:
   database:
-    container_name: cherry-task-tb
+    container_name: cherry-task-db
     image: postgres:10.17
     environment:
       - 'POSTGRES_USER=postgres'

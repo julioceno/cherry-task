@@ -2,9 +2,9 @@
 
 ##### _Organize suas cerejas do dia a dia_
 
-O cherry task é uma aplicação com a primicia de ajudar o seu usuário a se organizar com suas tarefas do dia a dia.
+O cherry task é uma aplicação com a primicia de ajudar o seu usuário a se organizar com suas tarefas do dia a dia
 
-![Apresentação](./.github/presentation.gif)
+![Apresentação](./.github/sigin-screen.png)
 
 _"A verdadeira organização começa dentro de você!"_
 
@@ -33,7 +33,7 @@ Com HTTPS
 https://github.com/julioceno/cherry-task.git
 ```
 
-2. Depois instale as dependências de desenvolvimento. Na raiz do projeto rode o seguinte comando:
+2. Depois instale as dependências de desenvolvimento, na raiz do projeto rode o seguinte comando:
 
 ```sh
 yarn
@@ -44,7 +44,7 @@ yarn
 4. suba o container docker
 
 ```sh
-docker-compose -f docker/docker-compose.yml up -d
+yarn workspace api docker-compose -f docker/docker-compose.yml up -d
 ```
 
 5. Na raiz do projeto, rode o seguinte comando
