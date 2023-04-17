@@ -3,13 +3,11 @@ import { verifyPermissionUserInTask } from '../../../useCases/verifyPermissionUs
 
 class DeleteController {
   async run(userId: string, taskid: string) {
-    verifyPermissionUserInTask.run(userId, taskid);
+    await verifyPermissionUserInTask.run(userId, taskid);
 
-    const task = await prismaClient.task.delete({
+    return prismaClient.task.delete({
       where: { id: taskid },
     });
-
-    return task;
   }
 }
 

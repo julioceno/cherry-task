@@ -4,7 +4,7 @@ import { verifyPermissionUserInTask } from '../../../useCases/verifyPermissionUs
 
 export class FindOneController {
   async run(userId: string, id: string) {
-    verifyPermissionUserInTask.run(userId, id);
+    await verifyPermissionUserInTask.run(userId, id);
 
     const task = await prismaClient.task.findFirst({
       where: { id, userId },

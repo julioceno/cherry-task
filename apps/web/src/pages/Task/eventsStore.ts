@@ -126,7 +126,8 @@ class EventsStore {
     steps?: { id: string; title: Nullable<string>; checked: boolean }[]
   ) {
     if (!steps?.length) {
-      return (this.steps = [this.createStepItem()]);
+      this.steps = [this.createStepItem()];
+      return;
     }
 
     const values: IStep[] = steps.map((step, indice) => ({

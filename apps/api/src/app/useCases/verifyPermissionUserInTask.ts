@@ -9,7 +9,7 @@ class VerifyPermissionUserInTask {
       select: { userId: true },
     });
 
-    /*     if (!task) {
+    if (!task) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: Messages.MESSAGE_NOT_FOUND,
@@ -21,7 +21,7 @@ class VerifyPermissionUserInTask {
         code: 'FORBIDDEN',
         message: Messages.MESSAGE_USER_NOT_PERMISSION,
       });
-    } */
+    }
   }
 }
 

@@ -37,7 +37,7 @@ function App() {
               }
 
               return false;
-            } catch (error) {
+            } catch {
               return false;
             }
           },
@@ -73,13 +73,11 @@ function App() {
         httpBatchLink({
           url: config.appUrl,
           headers() {
-            const accessToken = config.tokens.accessToken;
+            const accessToken = localStorage.getItem(config.tokens.accessToken);
 
             if (accessToken) {
               return {
-                authorization: `Bearer ${localStorage.getItem(
-                  config.tokens.accessToken
-                )}`,
+                authorization: `Bearer ${accessToken}`,
               };
             }
 
