@@ -33,7 +33,7 @@ Com HTTPS
 https://github.com/julioceno/cherry-task.git
 ```
 
-2. Depois instale as dependências de desenvolvimento, na raiz do projeto rode o seguinte comando:
+2. Depois, instale as dependências de desenvolvimento, na raiz do projeto rode o seguinte comando:
 
 ```sh
 yarn
